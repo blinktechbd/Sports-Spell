@@ -63,6 +63,7 @@
                                         <th>NAME</th>
                                         <th>STATUS</th>
                                         <th>ORDER BY</th>
+                                        <th>TYPE</th>
                                         <th>ACTION</th>
                                     </tr>
                                 </thead>
@@ -79,6 +80,7 @@
                                                 @endif
                                             </td>
                                             <td> {{ $category->sort_order }}</td>
+                                            <td> <span class="badge badge-info">{{ $category->type }}</span></td>
                                             <td>
                                                 <a class="" href="{{ route('categories.edit',$category->id) }}" data-toggle="tooltip" data-placement="top" title="Category Edit"><i class="fa fa-edit text-danger"></i></a>
                                                 <a class="px-3" href="{{ route('categories.show', $category->id) }}" data-toggle="tooltip" data-placement="top" title="Change Status">
@@ -88,13 +90,15 @@
                                                         <i class="fa fa-toggle-off text-danger"></i>
                                                     @endif
                                                 </a>
-                                                <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-link p-0 m-0 align-baseline" data-toggle="tooltip" data-placement="top" title="Category Delete" onclick="return confirm('Are you sure?')">
-                                                        <i class="fa fa-trash text-danger"></i>
-                                                    </button>
-                                                </form>
+                                                @if(Auth::user()->is_role !== 'editor')
+                                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline" data-toggle="tooltip" data-placement="top" title="Category Delete" onclick="return confirm('Are you sure?')">
+                                                            <i class="fa fa-trash text-danger"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

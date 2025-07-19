@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Beckend;
 
-use App\Http\Controllers\Controller;
+use voku\helper\ASCII;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {
@@ -31,9 +33,21 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            // 'name' => 'required|unique:categories,name',
             'name' => 'required',
+            'type' => 'required',
         ]);
-        Category::create($validated);
+        $category = new Category;
+        if($validated['type'] == 'special'){
+           Category::where(['type'=>'special','status'=>'active'])->update(['status' => 'inactive']);
+           $category->sort_order = 1;
+        }else {
+            $category->sort_order = Category::where('type', $validated['type'])->max('sort_order') + 1;
+        }
+        $category->name = $validated['name'];
+        $category->type = $validated['type'];
+        $category->slug = str_replace(' ', '-', $validated['name']);
+        $category->save();
         return redirect()->route('categories.index')->with('message','Created Successfully');
     }
 
@@ -63,13 +77,19 @@ class CategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'name' => 'required',
+            'name' => 'required|unique:categories,name,' . $id,
+            'type' => 'required',
             'sort_order' => 'required',
         ]);
-        Category::findOrFail($id)->update([
-            'name'=>$validated['name'],
-            'sort_order'=>$validated['sort_order']
-        ]);
+        $category = Category::findOrFail($id);
+        if($validated['type'] == 'special'){
+           Category::where(['type'=>'special','status'=>'active'])->update(['status' => 'inactive']);
+           $category->sort_order = $validated['sort_order'];
+        }
+        $category->name = $validated['name'];
+        $category->type = $validated['type'];
+        $category->slug = str_replace(' ', '-', $validated['name']);
+        $category->save();
         return redirect()->route('categories.index')->with('message','Updated Successfully');
     }
 

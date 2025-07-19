@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 @push('title')
-    Category |
+    {{ $category->name ?? '' }} |
 @endpush
 @push('appendCss')
     <style>
@@ -84,26 +84,26 @@
         }
 
         .page-item.active .page-link {
-            background-color: #FF0000; !important;
+            background-color: #FF0000;
+            !important;
             border: none !important;
         }
     </style>
 @endpush
 @push('meta')
-    <meta name="description" content="A short description of your website for SEO and social media.">
     <!-- Open Graph / Facebook -->
-    <meta property="og:title" content="My Awesome Website" />
-    <meta property="og:description" content="A brief description of your page that will appear in shares." />
-    <meta property="og:image" content="{{ asset('/storage/assets/images/logo/og-logo.png') }}" />
+    <meta property="og:title" content="{{ getSetting()->meta_title }}" />
+    <meta property="og:description" content="{{ getSetting()->meta_desc }}" />
+    <meta property="og:image" content="{{ asset('/storage/assets/images/logo/' . getSetting()->meta_img) }}" />
     <meta property="og:url" content="{{ url('/') }}" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Sports" />
-
+    <meta property="og:site_name" content="{{ getSetting()->site_title }}" />
+    <meta name="description" content="{{ getSetting()->site_desc }}">
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Your Page Title Here" />
-    <meta name="twitter:description" content="A brief description of your page." />
-    <meta name="twitter:image" content="{{ asset('/storage/assets/images/logo/og-logo.png') }}" />
+    <meta name="twitter:title" content="{{ getSetting()->meta_title }}" />
+    <meta name="twitter:description" content="{{ getSetting()->meta_desc }}" />
+    <meta name="twitter:image" content="{{ asset('/storage/assets/images/logo/' . getSetting()->meta_img) }}" />
     <meta name="twitter:url" content="{{ url('/') }}" />
     <meta name="twitter:site" content="@Sports" />
     <meta name="twitter:creator" content="@Sports" />
@@ -123,9 +123,17 @@
         <div class="container">
             <div class="row menu-listing">
                 <div class="col-lg-12 d-flex gap-4">
-                    <p class="text-danger"><b>&#128973; <a href="" class="text-danger">বাংলাদেশ</a></b></p>
-                    <p class="text-danger"><b>&#128973; <a href="" class="text-danger">আন্তর্জাতিক</a></b></p>
-                    <p class="text-danger"><b>&#128973; <a href="" class="text-danger">লিগ</a></b></p>
+                    @if (optional($category->subcategories)->isNotEmpty())
+                        @foreach ($category->subcategories as $subcategory)
+                            <p class="text-danger">&#128973; <a
+                                        href="{{ route('cat-wise-sub-content', [$subcategory->category?->slug, $subcategory?->name]) }}"
+                                        class="text-danger">{{ $subcategory?->name ?? '' }}</a></p>
+                        @endforeach
+                    @else
+
+                        <p class="text-danger">&#128973; <a href="{{ route('category-wise-content', $category->slug) }}"
+                                    class="text-danger">{{ $category->name ?? '' }}</a></p>
+                    @endif
                 </div>
             </div>
         </div>
@@ -138,375 +146,153 @@
                 {{-- left content --}}
                 <div class="col-lg-8">
                     <div class="row">
-                        {{-- special left content --}}
-                        <div class="col-sm-7 col-md-7 col-lg-8 mt-2">
-                            <div class="card border-0 shadow-sm special-left-content">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h5 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 40) }}</b>
-                                    </h5>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            400,
-                                        ) }}
-                                    </p>
-                                </div>
+                        {{-- left content --}}
+                        @if ($catContents->count() > 0)
+                            <div class="col-sm-7 col-md-7 col-lg-8 mt-2">
+                                <a href="{{ route('categoryWiseContentDetails', [$catContents[0]?->category?->slug, $catContents[0]?->subcategory?->name, $catContents[0]?->slug]) }}"
+                                    class="text-decoration-none">
+                                    <div class="card border-0 shadow-sm special-left-content">
+                                        <img class="card-img-top"
+                                            src="{{ asset('storage/assets/images/blogs/' . $catContents[0]->image) }}"
+                                            alt="image-1">
+                                        <div class="card-body">
+                                            <small
+                                                class="text-muted">{{ bangla_date($catContents[0]['created_at']) }} |
+                                                    অ্যাডমিন</small>
+                                            <h4 class="card-title my-2 text-danger">
+                                                {{ Str::limit($catContents[0]->title, 40) }}
+                                            </h4>
+                                            <p class="card-text text-muted">
+                                                {{ Str::limit(strip_tags(html_entity_decode($catContents[0]->details)), 400) }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                        </div>
-                        {{-- special middle content --}}
+                        @endif
+                        {{-- Middle content --}}
                         <div class="col-sm-5 col-md-5 col-lg-4 mt-2">
-                            <div class="card border-0 shadow-sm special-middle-content">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body px-2">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h6 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 25) }}</b>
-                                    </h6>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            50,
-                                        ) }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="card border-0 shadow-sm special-middle-content mt-2">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body px-2">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h6 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 25) }}</b>
-                                    </h6>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            50,
-                                        ) }}
-                                    </p>
-                                </div>
-                            </div>
+                            @foreach ($catContents->slice(1, 2) as $catContent)
+                                <a href="{{ route('categoryWiseContentDetails', [$catContent?->category?->slug, $catContent?->subcategory?->name, $catContent?->slug]) }}"
+                                    class="text-decoration-none">
+                                    <div class="card border-0 shadow-sm special-middle-content mb-2">
+                                        <img class="card-img-top"
+                                            src="{{ asset('storage/assets/images/blogs/' . $catContent->image) }}"
+                                            alt="image-1">
+                                        <div class="card-body px-2">
+                                            <small
+                                                class="text-muted">{{ bangla_date($catContent['created_at']) }} |
+                                                    অ্যাডমিন</small>
+                                            <h5 class="card-title my-2 text-danger">
+                                                {{ Str::limit($catContent->title, 25) }}
+                                            </h5>
+                                            <p class="card-text text-muted">
+                                                {{ Str::limit(strip_tags(html_entity_decode($catContent->details)), 50) }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endforeach
                         </div>
-                        <div class="col-sm-6 col-md-4 col-lg-4">
-                            <div class="card border-0 shadow-sm special-middle-content mt-2">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body px-2">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h6 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 25) }}</b>
-                                    </h6>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            50,
-                                        ) }}
-                                    </p>
-                                </div>
+                        {{-- Smaller cards --}}
+                        @foreach ($catContents->slice(4) as $catContent)
+                            <div class="col-sm-6 col-md-4 col-lg-4 mt-2">
+                                <a href="{{ route('categoryWiseContentDetails', [$catContent?->category?->slug, $catContent?->subcategory?->name, $catContent?->slug]) }}"
+                                    class="text-decoration-none">
+                                    <div class="card border-0 shadow-sm special-middle-content">
+                                        <img class="card-img-top"
+                                            src="{{ asset('storage/assets/images/blogs/' . $catContent->image) }}"
+                                            alt="image-1">
+                                        <div class="card-body px-2">
+                                            <small
+                                                class="text-muted">{{ bangla_date($catContent['created_at']) }} |
+                                                    অ্যাডমিন</small>
+                                            <h5 class="card-title my-2 text-danger">
+                                               {{ Str::limit($catContent->title, 25) }}
+                                            </h5>
+                                            <p class="card-text text-muted">
+                                                {{ Str::limit(strip_tags(html_entity_decode($catContent->details)), 50) }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-4">
-                            <div class="card border-0 shadow-sm special-middle-content mt-2">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body px-2">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h6 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 25) }}</b>
-                                    </h6>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            50,
-                                        ) }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-4">
-                            <div class="card border-0 shadow-sm special-middle-content mt-2">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body px-2">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h6 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 25) }}</b>
-                                    </h6>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            50,
-                                        ) }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-4">
-                            <div class="card border-0 shadow-sm special-middle-content mt-2">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body px-2">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h6 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 25) }}</b>
-                                    </h6>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            50,
-                                        ) }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-4">
-                            <div class="card border-0 shadow-sm special-middle-content mt-2">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body px-2">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h6 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 25) }}</b>
-                                    </h6>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            50,
-                                        ) }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-4">
-                            <div class="card border-0 shadow-sm special-middle-content mt-2">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body px-2">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h6 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 25) }}</b>
-                                    </h6>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            50,
-                                        ) }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-4">
-                            <div class="card border-0 shadow-sm special-middle-content mt-2">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body px-2">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h6 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 25) }}</b>
-                                    </h6>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            50,
-                                        ) }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-4">
-                            <div class="card border-0 shadow-sm special-middle-content mt-2">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body px-2">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h6 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 25) }}</b>
-                                    </h6>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            50,
-                                        ) }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-4">
-                            <div class="card border-0 shadow-sm special-middle-content mt-2">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body px-2">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h6 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 25) }}</b>
-                                    </h6>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            50,
-                                        ) }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-4">
-                            <div class="card border-0 shadow-sm special-middle-content mt-2">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body px-2">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h6 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 25) }}</b>
-                                    </h6>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            50,
-                                        ) }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-4">
-                            <div class="card border-0 shadow-sm special-middle-content mt-2">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body px-2">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h6 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 25) }}</b>
-                                    </h6>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            50,
-                                        ) }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-4">
-                            <div class="card border-0 shadow-sm special-middle-content mt-2">
-                                <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                    alt="image-1">
-                                <div class="card-body px-2">
-                                    <small class="text-muted">{{ \Carbon\Carbon::parse(date('Y-m-d'))->format('F j, Y') }}
-                                        | Admin</small>
-                                    <h6 class="card-title my-2 text-danger">
-                                        <b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 25) }}</b>
-                                    </h6>
-                                    <p class="card-text text-muted">
-                                        {{ Str::limit(
-                                            'মঙ্গলবার বাফুফে ভবনে অনুষ্ঠিত ম্যাচ-পূর্ববর্তী সংবাদ সম্মেলনে কোচ ক্যাবরেরা ও অধিনায়ক জামাল ভুঁইয়া উপস্থিত ছিলেন। কোচ জানান, ইংল্যান্ড থেকে এসে হামজা গতকালই দলের সঙ্গে অনুশীলনে অংশ নিয়েছেন এবং ভুটানের বিপক্ষে ম্যাচে তাকে মাঠে দেখা যাবে বলে আশা করা হচ্ছে। তবে ইতালিপ্রবাসী ফাহমিদুল ইসলামকে মূল দলে রাখা হবে কি না, সে বিষয়ে এখনো সিদ্ধান্ত হয়নি। এছাড়া, কানাডাপ্রবাসী ফুটবলার শমিত সোম আগামীকাল দলের সঙ্গে যোগ দেওয়ার কথা রয়েছে। ভুটানের সঙ্গে প্রীতি ম্যাচ ছাড়াও ১০ জুন এএফসি এশিয়ান কাপ বাছাইপর্বে সিঙ্গাপুরের বিপক্ষে ম্যাচ রয়েছে বাংলাদেশের। এ দুটি ম্যাচ সামনে রেখে ঘোষিত ২৬ সদস্যের প্রাথমিক দলে এই তিন প্রবাসী ফুটবলারকেই রাখা হয়েছে। এর আগে মার্চ মাসে ভারতের বিপক্ষে এশিয়ান কাপ বাছাইপর্বে আন্তর্জাতিক অভিষেক হয় হামজার। এবার ঘরের মাঠে সমর্থকদের সামনে খেলার অপেক্ষায় আছেন তিনি, আর তা নিয়ে ফুটবলপ্রেমীদের মধ্যে তৈরি হয়েছে ব্যাপক উৎসাহ ও উত্তেজনা। তবে টিকিট প্রাপ্তি নিয়ে সমর্থকদের মধ্যে রয়েছে কিছুটা অসন্তোষ ও ক্ষোভ।',
-                                            50,
-                                        ) }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
+
                     </div>
-
-
-
-                    <div class="row">
-                        <div class="col-12 d-flex justify-content-center mt-4">
-                            <div class="demo">
-                                <nav class="pagination-outer" aria-label="Page navigation">
-                                    <ul class="pagination">
-
-                                        <li class="page-item disabled">
-                                            <span class="page-link" aria-hidden="true">«</span>
-                                        </li>
-
-                                        <li class="page-item">
-                                            <a class="page-link" href="" aria-label="Previous">
-                                                <span aria-hidden="true">«</span>
-                                            </a>
-                                        </li>
-
-
-                                        <li class="page-item active">
-                                            <a class="page-link" href=""></a>
-                                        </li>
-
-
-                                        <li class="page-item">
-                                            <a class="page-link" href="" aria-label="Next">
-                                                <span aria-hidden="true">»</span>
-                                            </a>
-                                        </li>
-
-                                        <li class="page-item disabled">
-                                            <span class="page-link" aria-hidden="true">»</span>
-                                        </li>
-
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-
 
                     {{-- Pagination --}}
-
-                    {{-- @if ($projects->total() > $projects->perPage())
+                    @if ($catContents->lastPage() > 1)
                         <div class="row">
                             <div class="col-12 d-flex justify-content-center mt-4">
                                 <div class="demo">
                                     <nav class="pagination-outer" aria-label="Page navigation">
                                         <ul class="pagination">
-                                            @if ($projects->onFirstPage())
-                                                <li class="page-item disabled">
+
+                                            {{-- First page "«" disabled or active --}}
+                                            @if ($catContents->onFirstPage())
+                                                <li class="page-item disabled" aria-disabled="true" aria-label="First">
                                                     <span class="page-link" aria-hidden="true">«</span>
                                                 </li>
                                             @else
                                                 <li class="page-item">
-                                                    <a class="page-link" href="{{ $projects->previousPageUrl() }}" aria-label="Previous">
-                                                        <span aria-hidden="true">«</span>
-                                                    </a>
+                                                    <a class="page-link" href="{{ $catContents->url(1) }}"
+                                                        aria-label="First">«</a>
                                                 </li>
                                             @endif
-                                            @foreach ($projects->getUrlRange(1, $projects->lastPage()) as $page => $url)
-                                                <li class="page-item {{ $projects->currentPage() == $page ? 'active' : '' }}">
-                                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                                                </li>
-                                            @endforeach
-                                            @if ($projects->hasMorePages())
-                                                <li class="page-item">
-                                                    <a class="page-link" href="{{ $projects->nextPageUrl() }}" aria-label="Next">
-                                                        <span aria-hidden="true">»</span>
-                                                    </a>
+
+                                            {{-- Previous page "‹" --}}
+                                            @if ($catContents->onFirstPage())
+                                                <li class="page-item disabled" aria-disabled="true" aria-label="Previous">
+                                                    <span class="page-link" aria-hidden="true">‹</span>
                                                 </li>
                                             @else
-                                                <li class="page-item disabled">
-                                                    <span class="page-link" aria-hidden="true">»</span>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{ $catContents->previousPageUrl() }}"
+                                                        rel="prev" aria-label="Previous">‹</a>
                                                 </li>
                                             @endif
+
+                                            {{-- Pagination Elements (page numbers) --}}
+                                            @foreach ($catContents->getUrlRange(1, $catContents->lastPage()) as $page => $url)
+                                                <li
+                                                    class="page-item {{ $page == $catContents->currentPage() ? 'active' : '' }}">
+                                                    <a class="page-link"
+                                                        href="{{ $url }}">{{ $page }}</a>
+                                                </li>
+                                            @endforeach
+
+                                            {{-- Next page "›" --}}
+                                            @if ($catContents->hasMorePages())
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{ $catContents->nextPageUrl() }}"
+                                                        rel="next" aria-label="Next">›</a>
+                                                </li>
+                                            @else
+                                                <li class="page-item disabled" aria-disabled="true" aria-label="Next">
+                                                    <span class="page-link" aria-hidden="true">›</span>
+                                                </li>
+                                            @endif
+
+                                            {{-- Last page "»" --}}
+                                            @if ($catContents->currentPage() == $catContents->lastPage())
+                                                <li class="page-item disabled" aria-disabled="true" aria-label="Last">
+                                                    <span class="page-link" aria-hidden="true">»</span>
+                                                </li>
+                                            @else
+                                                <li class="page-item">
+                                                    <a class="page-link"
+                                                        href="{{ $catContents->url($catContents->lastPage()) }}"
+                                                        aria-label="Last">»</a>
+                                                </li>
+                                            @endif
+
                                         </ul>
                                     </nav>
                                 </div>
                             </div>
                         </div>
-                    @endif --}}
+                    @endif
 
 
                 </div>
@@ -514,11 +300,8 @@
                 {{-- right content --}}
                 <div class="col-lg-4 my-2">
 
-
                     {{-- polling vote --}}
                     @include('frontend.layouts.online_poll')
-
-
 
                     {{-- special-content-right-ad --}}
                     <div class="special-content-right-ad my-5">
@@ -543,127 +326,39 @@
                         <div class="tab-content mt-3" id="myTabContent">
                             <div class="tab-pane fade show active" id="latest" role="tabpanel"
                                 aria-labelledby="latest-tab">
-                                <div class="row">
-                                    <div class="col-sm-4 col-md-4 col-lg-4">
-                                        <img src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                            alt="image-1">
+                                @foreach (ltst_post() as $letestCont)
+                                    <div class="row mb-2">
+                                        <div class="col-sm-4 col-md-4 col-lg-4">
+                                            <img src="{{ asset('/storage/assets/images/blogs/' . $letestCont->image) }}"
+                                                alt="{{ $letestCont->slug }}">
+                                        </div>
+                                        <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center">
+                                            <p><a href="{{ route('categoryWiseContentDetails', [$letestCont?->category?->slug, $letestCont?->subcategory?->name, $letestCont?->slug]) }}"
+                                                    class="text-decoration-none text-danger">{{ Str::limit($letestCont->title, 40) }}</a>
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center">
-                                        <p><a href=""
-                                                class="text-decoration-none text-danger"><b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 40) }}</b></a>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-4 col-md-4 col-lg-4">
-                                        <img src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                            alt="image-1">
-                                    </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center">
-                                        <p><a href=""
-                                                class="text-decoration-none text-danger"><b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 40) }}</b></a>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-4 col-md-4 col-lg-4">
-                                        <img src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                            alt="image-1">
-                                    </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center">
-                                        <p><a href=""
-                                                class="text-decoration-none text-danger"><b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 40) }}</b></a>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-4 col-md-4 col-lg-4">
-                                        <img src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                            alt="image-1">
-                                    </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center">
-                                        <p><a href=""
-                                                class="text-decoration-none text-danger"><b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 40) }}</b></a>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-4 col-md-4 col-lg-4">
-                                        <img src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                            alt="image-1">
-                                    </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center">
-                                        <p><a href=""
-                                                class="text-decoration-none text-danger"><b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 40) }}</b></a>
-                                        </p>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                             <div class="tab-pane fade" id="trand" role="tabpanel" aria-labelledby="trand-tab">
-                                <div class="row">
-                                    <div class="col-sm-4 col-md-4 col-lg-4">
-                                        <img src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                            alt="image-1">
+                                @foreach (trdng_post() as $maxVisitor)
+                                    <div class="row mb-2">
+                                        <div class="col-sm-4 col-md-4 col-lg-4">
+                                            <img src="{{ asset('/storage/assets/images/blogs/' . $maxVisitor->image) }}"
+                                                alt="{{ $maxVisitor->slug }}">
+                                        </div>
+                                        <div class="col-sm-8 col-md-8 col-lg-8 d-flex d-flex align-items-center">
+                                            <p><a href="{{ route('categoryWiseContentDetails', [$maxVisitor?->category?->slug, $maxVisitor?->subcategory?->name, $maxVisitor?->slug]) }}"
+                                                    class="text-decoration-none text-danger">{{ Str::limit($maxVisitor->title, 40) }}</a>
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8 d-flex d-flex align-items-center">
-                                        <p><a href=""
-                                                class="text-decoration-none text-danger"><b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 40) }}</b></a>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-4 col-md-4 col-lg-4">
-                                        <img src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                            alt="image-1">
-                                    </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center">
-                                        <p><a href=""
-                                                class="text-decoration-none text-danger"><b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 40) }}</b></a>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-4 col-md-4 col-lg-4">
-                                        <img src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                            alt="image-1">
-                                    </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center">
-                                        <p><a href=""
-                                                class="text-decoration-none text-danger"><b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 40) }}</b></a>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-4 col-md-4 col-lg-4">
-                                        <img src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                            alt="image-1">
-                                    </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center">
-                                        <p><a href=""
-                                                class="text-decoration-none text-danger"><b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 40) }}</b></a>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-4 col-md-4 col-lg-4">
-                                        <img src="{{ asset('/storage/assets/images/blogs/image-1.jpg') }}"
-                                            alt="image-1">
-                                    </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8 d-flex align-items-center">
-                                        <p><a href=""
-                                                class="text-decoration-none text-danger"><b>{{ Str::limit('ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা ভুটানের বিপক্ষে ঘরের মাঠে অভিষেকের অপেক্ষায় হামজা', 40) }}</b></a>
-                                        </p>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
     </div>
-
-
 @endsection

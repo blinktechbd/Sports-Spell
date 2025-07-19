@@ -42,7 +42,7 @@ class ContentController extends Controller
         $validated = $request->validate([
             'category_id' => 'required',
             'subcategory_id' => 'required',
-            'title' => 'required',
+            'title' => 'required|unique:contents,title',
             'image' => 'required',
             'details' => 'required',
             'tags' => 'required',
@@ -56,10 +56,10 @@ class ContentController extends Controller
             'category_id' => $validated['category_id'],
             'subcategory_id' => $validated['subcategory_id'],
             'title' => $validated['title'],
-            'slug' => Str::slug($validated['title']),
+            'slug' => str_replace(' ', '-', $validated['title']),
             'image' => $validated['image'],
             'details' => $validated['details'],
-            'tags' => json_encode(explode(',', $validated['tags']))
+            'tags' => json_encode(explode(',', $validated['tags'])),
         ]);
         return redirect()->route('contents.index')->with('message','Created Successfully');
     }
@@ -91,10 +91,11 @@ class ContentController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $content = Content::findOrFail($id);
         $validated = $request->validate([
             'category_id' => 'required',
             'subcategory_id' => 'required',
-            'title' => 'required',
+            'title' => 'required|unique:contents,title,' . $content->id,
             'image' => 'required',
             'details' => 'required',
             'tags' => 'required',
@@ -102,17 +103,19 @@ class ContentController extends Controller
         if ($request->hasFile('image')){
             $width = 750; $height = 390;
             $folder = 'assets/images/blogs/';
+            $this->services->imageDestroy($content->image, $folder);
             $validated['image'] = $this->services->imageUpload($request->file('image'), $folder,$width,$height);
         }
-        Content::findOrFail($id)->update([
+        $content->update([
             'category_id' => $validated['category_id'],
             'subcategory_id' => $validated['subcategory_id'],
             'title' => $validated['title'],
+            'slug' => str_replace(' ', '-', $validated['title']),
             'image' => $validated['image'],
             'details' => $validated['details'],
-            'tags' => $validated['tags'],
+            'tags' => json_encode(explode(',', $validated['tags'])),
         ]);
-        return redirect()->route('categories.index')->with('message','Updated Successfully');
+        return redirect()->route('contents.index')->with('message','Updated Successfully');
     }
 
     /**
@@ -121,6 +124,8 @@ class ContentController extends Controller
     public function destroy(string $id)
     {
         $content = Content::findOrFail($id);
+        $folder = 'assets/images/blogs/';
+        $this->services->imageDestroy($content->image, $folder);
         $content->delete();
         return redirect()->back()->with('message', 'Content deleted successfully.');
     }

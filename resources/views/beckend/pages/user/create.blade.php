@@ -60,6 +60,26 @@
                                         @enderror
                                     </div>
                                     <div class="col-12 mb-3">
+                                        <div class="input-group">
+                                            <input type="password" name="password" id="password"
+                                                class="form-control form-control-danger @error('password') is-invalid @enderror"
+                                                placeholder="User Password" data-toggle="tooltip" data-placement="top"
+                                                title="User Password" />
+
+                                            <div class="input-group-append">
+                                                <span class="input-group-text bg-danger" id="togglePassword"
+                                                    style="cursor: pointer;">
+                                                    <i class="fa fa-eye" id="eyeIcon"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @error('password')
+                                            <div class="invalid-feedback d-block">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12 mb-3">
                                         <input type="file" name="image"
                                             class="form-control form-control-danger @error('image') is-invalid @enderror"
                                             placeholder="User Image" data-toggle="tooltip" data-placement="top"
@@ -74,11 +94,13 @@
                                     <div class="col-12 mb-3">
                                         <div class="form-group" data-toggle="tooltip" data-placement="top"
                                             title="User Type">
-                                            <select name="is_role" id="category"
+                                            <select name="is_role" id="isRole"
                                                 class="form-control select2 select2-danger @error('is_role') is-invalid @enderror"
                                                 data-dropdown-css-class="select2-danger" style="width: 100%;">
                                                 <option value="">User Type Select</option>
+                                                <option value="superadmin">Superadmin</option>
                                                 <option value="admin">Admin</option>
+                                                <option value="editor">Editor</option>
                                                 <option value="user">User</option>
                                             </select>
                                             @error('is_role')
@@ -100,3 +122,16 @@
         </div>
     </div>
 @endsection
+@push('adminAppendScripts')
+    <script>
+        $(document).ready(function() {
+            $('#togglePassword').click(function() {
+                const input = $('#password');
+                const icon = $('#eyeIcon');
+                const isPassword = input.attr('type') === 'password';
+                input.attr('type', isPassword ? 'text' : 'password');
+                icon.toggleClass('fa-eye fa-eye-slash');
+            });
+        });
+    </script>
+@endpush

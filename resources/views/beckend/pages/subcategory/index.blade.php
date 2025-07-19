@@ -74,14 +74,15 @@
                                             <td> {{ $subcategory->name ?? '' }}</td>
                                             <td>
                                                 <a class="" href="{{ route('subcategories.edit',$subcategory->id) }}" data-toggle="tooltip" data-placement="top" title="Subcategory Edit"><i class="fa fa-edit text-danger"></i></a>
-
-                                                <form action="{{ route('subcategories.destroy', $subcategory->id) }}" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-link px-3 p-0 m-0 align-baseline" data-toggle="tooltip" data-placement="top" title="Subcategory Delete" onclick="return confirm('Are you sure?')">
-                                                        <i class="fa fa-trash text-danger"></i>
-                                                    </button>
-                                                </form>
+                                                @if(Auth::user()->is_role !== 'editor')
+                                                    <form action="{{ route('subcategories.destroy', $subcategory->id) }}" method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-link px-3 p-0 m-0 align-baseline" data-toggle="tooltip" data-placement="top" title="Subcategory Delete" onclick="return confirm('Are you sure?')">
+                                                            <i class="fa fa-trash text-danger"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

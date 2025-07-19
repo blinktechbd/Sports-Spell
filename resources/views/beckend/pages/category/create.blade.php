@@ -38,6 +38,22 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-12">
+                                        <div class="form-group" data-toggle="tooltip" data-placement="top"
+                                            title="Category Type">
+                                            <select name="type" id="type"
+                                                class="form-control select2 select2-danger @error('type') is-invalid @enderror"
+                                                data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                                <option value="default">Default Category</option>
+                                                <option value="special">Special Category</option>
+                                            </select>
+                                            @error('type')
+                                                <div class="invalid-feedback d-block">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
                                         <input type="text" name="name"
                                             class="form-control form-control-danger @error('name') is-invalid @enderror"
                                             placeholder="Category Name" data-toggle="tooltip" data-placement="top"

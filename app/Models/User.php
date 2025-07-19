@@ -22,8 +22,13 @@ class User extends Authenticatable
         'email',
         'password',
         'image',
+        'pin',
         'is_role',
     ];
+
+    public function comments(){
+        return $this->hasMany(Comment::class,'user_id')->with('content');
+    }
 
 
 
@@ -33,7 +38,6 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 

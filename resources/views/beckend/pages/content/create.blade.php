@@ -34,6 +34,7 @@
             border-radius: 0.25rem;
             background-color: #fff;
         }
+
         .bootstrap-tagsinput .tag {
             margin-right: 2px;
             color: white;
@@ -69,6 +70,7 @@
                                 <div class="card-title text-danger">Content Create</div>
                             </div>
                             <div class="card-body">
+
                                 <div class="row">
                                     <div class="col-12 mb-2">
                                         <div class="form-group" data-toggle="tooltip" data-placement="top"
@@ -87,7 +89,6 @@
                                                 </div>
                                             @enderror
                                         </div>
-
                                     </div>
                                     <div class="col-12 mb-2">
                                         <div class="form-group" data-toggle="tooltip" data-placement="top"
@@ -118,7 +119,10 @@
                                     <div class="col-12 mb-2">
                                         <div class="form-group">
                                             <div class="custom-file">
-                                                <input type="file" name="image" class="form-control form-control-danger custom-file-input" id="customFile" data-toggle="tooltip" data-placement="top" title="Content Image">
+                                                <input type="file" name="image"
+                                                    class="form-control form-control-danger custom-file-input"
+                                                    id="customFile" data-toggle="tooltip" data-placement="top"
+                                                    title="Content Image">
                                                 <label class="custom-file-label" for="customFile">Choose file</label>
                                             </div>
                                             @error('image')
@@ -129,7 +133,8 @@
                                         </div>
                                     </div>
                                     <div class="col-12 mb-2">
-                                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="Content Details">
+                                        <div class="form-group" data-toggle="tooltip" data-placement="top"
+                                            title="Content Details">
                                             <textarea name="details" class="form-control" id="summernote" placeholder="Content Details"></textarea>
                                             @error('details')
                                                 <div class="invalid-feedback d-block">
@@ -139,8 +144,10 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="Content input tags">
-                                            <input type="text" id="tags" name="tags" class="form-control" data-role="tagsinput" placeholder="Enter content input tags">
+                                        <div class="form-group" data-toggle="tooltip" data-placement="top"
+                                            title="Content input tags">
+                                            <input type="text" id="tags" name="tags" class="form-control"
+                                                data-role="tagsinput" placeholder="Enter content input tags">
                                             @error('tags')
                                                 <div class="invalid-feedback d-block">
                                                     {{ $message }}
@@ -178,7 +185,7 @@
                     ['insert', ['link', 'picture', 'video']],
                     ['view', ['fullscreen', 'codeview', 'help']]
                 ],
-                fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '18', '20','22','24']
+                fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '18', '20', '22', '24']
             });
             $('#category').on('change', function() {
                 var categoryID = $(this).val();
@@ -188,9 +195,11 @@
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
-                            $('#subcategory').empty().append('<option value="">Select Subcategory</option>');
+                            $('#subcategory').empty().append(
+                                '<option value="">Select Subcategory</option>');
                             $.each(data, function(key, value) {
-                                $('#subcategory').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                                $('#subcategory').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
                             });
                         },
                         error: function() {

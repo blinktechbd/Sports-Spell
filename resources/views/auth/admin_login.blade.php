@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
+    @push('title')
+        Admin Login
+    @endpush
     @include('beckend.layouts.head')
 </head>
 

@@ -31,7 +31,9 @@
             color: #dc3545;
         }
         .content-image{
-            width:55px;
+            width:32px;
+            height: 32px;
+            border-radius: 50%;
         }
     </style>
 @endpush
@@ -77,18 +79,37 @@
                                             <td>{{ $user->name ?? '' }}</td>
                                             <td>{{ $user->email ?? '' }}</td>
                                             <td>
-                                                <img class="content-image" src="{{ asset('/storage/assets/images/users/'.$user->image) }}" alt="">
+                                                <img class="content-image" src="{{ asset('/storage/assets/images/profile/' . ($user->image ?? 'profile.png')) }}" alt="profile-image">
                                             </td>
+                                            <td><span class="badge badge-info">{{ Str::ucfirst($user->is_role ?? '') }}</span></td>
                                             <td>
-                                                <a class="" href="{{ route('users.edit',$user->id) }}" data-toggle="tooltip" data-placement="top" title="User Edit"><i class="fa fa-edit text-danger"></i></a>
-                                                <a class="px-3" href="{{ route('users.show',$user->id) }}" data-toggle="tooltip" data-placement="top" title="User Show"><i class="fa fa-eye text-danger"></i></a>
-                                                <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-link p-0 m-0 align-baseline" data-toggle="tooltip" data-placement="top" title="User Delete" onclick="return confirm('Are you sure?')">
-                                                        <i class="fa fa-trash text-danger"></i>
-                                                    </button>
-                                                </form>
+                                                @if(Auth::check() && Auth::user()->is_role == 'superadmin')
+
+                                                    <a href="{{ route('users.edit',$user->id) }}" data-toggle="tooltip" data-placement="top" title="User Edit"><i class="fa fa-edit text-danger"></i></a>
+                                                    <a class="px-3" href="{{ route('users.show',$user->id) }}" data-toggle="tooltip" data-placement="top" title="User Show"><i class="fa fa-eye text-danger"></i></a>
+
+                                                    <form action="{{ route('users.destroy', $user->id) }}" method="post" class="d-inline-block">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-link text-danger p-0" data-toggle="tooltip" data-placement="top" title="User Delete">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </form>
+
+                                                @elseif(Auth::user()->is_role == 'admin')
+                                                    @if($user->is_role == 'editor')
+                                                        <a href="{{ route('users.edit',$user->id) }}" data-toggle="tooltip" data-placement="top" title="User Edit"><i class="fa fa-edit text-danger"></i></a>
+                                                        <a class="px-3" href="{{ route('users.show',$user->id) }}" data-toggle="tooltip" data-placement="top" title="User Show"><i class="fa fa-eye text-danger"></i></a>
+                                                        <form action="{{ route('users.destroy', $user->id) }}" method="post" class="d-inline-block">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-link text-danger p-0" data-toggle="tooltip" data-placement="top" title="User Delete">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                @else
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

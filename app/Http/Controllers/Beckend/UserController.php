@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Beckend;
 
 use App\Models\User;
+use App\Models\Comment;
 use App\Services\Services;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -40,20 +42,20 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
             'is_role' => 'required',
         ]);
         if ($request->hasFile('image')){
-            $width = 400; $height = 400;
-            $folder = 'assets/images/profiles/';
+            $width = 225; $height = 225;
+            $folder = 'assets/images/profile/';
             $validated['image'] = $this->services->imageUpload($request->file('image'), $folder,$width,$height);
         }
-        return $validated['image'];
         User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'image' => $validated['image'] ?? 'default.png',
+            'image' => $validated['image'] ?? 'profile.png',
             'is_role' => $request->is_role ?? 'user',
+            'pin' => $validated['password'],
             'password' => Hash::make($validated['password']),
         ]);
         return redirect()->route('users.index')->with('message', 'Created Successfully');
@@ -64,8 +66,8 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        // $user = User::findOrFail($id);
-        // return redirect()->back()->with('message', 'User ' . $user->status . ' successfully.');
+        $user = User::findOrFail($id);
+        return view('beckend.pages.user.show', compact('user'));
     }
 
     /**
@@ -82,25 +84,27 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $user = User::findOrFail($id);
         $validated = $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
             'is_role' => 'required',
         ]);
         if ($request->hasFile('image')){
-            $width = 400; $height = 400;
-            $folder = 'assets/images/blogs/';
-            $validated['image'] = $this->services->imageUpload($request->file('image'), $folder,$width,$height);
+            $width = 225; $height = 225;
+            $folder = 'assets/images/profile/';
+            $validated['image'] = $this->services->imageDestroy($user->image, $folder);
+            $validated['image'] = $this->services->imageUpload($request->image, $folder,$width,$height);
+            $user->image = $validated['image'];
         }
-        User::findOrFail($id)->update([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'image' => $validated['image'],
-            'is_role' => $request->is_role ?? 'user',
-            'password' => Hash::make($validated['password']),
-        ]);
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->is_role = $validated['is_role'];
+        $user->pin = $validated['password'];
+        $user->password = Hash::make($validated['password']);
+        $user->save();
         return redirect()->route('users.index')->with('message', 'Updated Successfully');
     }
 
@@ -110,7 +114,17 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
+        $folder = 'assets/images/profile/';
+        $this->services->imageDestroy($user->image, $folder);
         $user->delete();
         return redirect()->back()->with('message', 'User deleted successfully.');
+    }
+    public function comment_lists(){
+        $comments = Comment::latest()->paginate(25);
+        return view('beckend.pages.user.comments',compact('comments'));
+    }
+    public function comment_delete($id){
+        $comments = Comment::findOrFail($id)->delete();
+        return redirect()->back()->with('message','Deleted Successfully');
     }
 }

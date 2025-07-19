@@ -85,14 +85,15 @@
                                             <td>
                                                 <a class="" href="{{ route('contents.edit',$content->id) }}" data-toggle="tooltip" data-placement="top" title="Content Edit"><i class="fa fa-edit text-danger"></i></a>
                                                 <a class="px-3" href="{{ route('contents.show',$content->id) }}" data-toggle="tooltip" data-placement="top" title="Content Show"><i class="fa fa-eye text-danger"></i></a>
-
-                                                <form action="{{ route('contents.destroy', $content->id) }}" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-link p-0 m-0 align-baseline" data-toggle="tooltip" data-placement="top" title="Content Delete" onclick="return confirm('Are you sure?')">
-                                                        <i class="fa fa-trash text-danger"></i>
-                                                    </button>
-                                                </form>
+                                                @if(Auth::user()->is_role !== 'editor')
+                                                    <form action="{{ route('contents.destroy', $content->id) }}" method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline" data-toggle="tooltip" data-placement="top" title="Content Delete" onclick="return confirm('Are you sure?')">
+                                                            <i class="fa fa-trash text-danger"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
