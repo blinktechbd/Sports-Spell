@@ -60,38 +60,40 @@
                             <div class="card-title text-danger">Comment Lists</div>
                         </div>
                         <div class="card-body">
-                            <table id="commentsTable" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>NAME</th>
-                                        <th>EMAIL</th>
-                                        <th>IMAGE</th>
-                                        <th>COMMENT</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($comments as $comment)
+                            <div style="overflow-x:auto; width:100%;">
+                                <table id="commentsTable" class="table table-bordered table-striped">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $comment->user->name ?? '' }}</td>
-                                            <td>{{ $comment->user->email ?? '' }}</td>
-                                            <td>
-                                                <img class="content-image" src="{{ asset('/storage/assets/images/profile/' . ($comment->user->image ?? 'profile.png')) }}" alt="profile-image">
-                                            </td>
-                                            <td>
-                                                {{ $comment->comment ?? '' }}
-                                            </td>
-                                            <td>
-                                               <a href="{{ route('commentDelete',$comment->id) }}" class="btn btn-link text-danger p-0" data-toggle="tooltip" data-placement="top" title="Comment Delete">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </td>
+                                            <th>SL</th>
+                                            <th>NAME</th>
+                                            <th>EMAIL</th>
+                                            <th>IMAGE</th>
+                                            <th>COMMENT</th>
+                                            <th class="text-center">ACTION</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($comments as $comment)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $comment->user->name ?? '' }}</td>
+                                                <td>{{ $comment->user->email ?? '' }}</td>
+                                                <td>
+                                                    <img class="content-image" src="{{ asset('/storage/assets/images/profile/' . ($comment->user->image ?? 'profile.png')) }}" alt="profile-image">
+                                                </td>
+                                                <td>
+                                                    {{ $comment->comment ?? '' }}
+                                                </td>
+                                                <td class="d-flex justify-content-center">
+                                                    <a href="{{ route('commentDelete',$comment->id) }}" class="btn btn-link text-danger p-0" data-toggle="tooltip" data-placement="top" title="Comment Delete">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -26,11 +26,11 @@ class HomeController extends Controller
         $specialCat = "";
         $specialCat = Category::where(['status'=>'active','type'=>'special','sort_order'=>1])->select('id','name','slug','status','sort_order','type')->first();
         if($specialCat){
-            $specialConts = Content::where(['category_id'=>$specialCat->id])->get() ?? [];
+            $specialConts = Content::with('author')->where(['category_id'=>$specialCat->id])->get() ?? [];
         }
-        $contents = Content::with('category:id,name,slug','subcategory:id,category_id,name')->latest()->take(6)->select('id','category_id','subcategory_id','title','slug','image','details','created_at')->get();
+        $contents = Content::with('category:id,name,slug','subcategory:id,category_id,name','author:id,name')->latest()->take(6)->select('id','category_id','subcategory_id','author_id','title','slug','image','details','created_at')->get();
         $categoriesContents = Category::with(['subcategories','contents' => function($query) {
-            $query->latest()->select('id','category_id','subcategory_id','title','slug','image','details','created_at')->take(3);
+            $query->with('author')->latest()->select('id','category_id','subcategory_id','author_id','title','slug','image','details','created_at')->take(3);
         }])->where(['status'=>'active'])->where('type', '!=', 'special')->orderBy('sort_order')->select('id','name','slug','status','sort_order','created_at')
         ->get();
         $topHomeCatData = $categoriesContents->take(3);
@@ -45,18 +45,18 @@ class HomeController extends Controller
             return view('frontend.pages.category.ajker_khela',compact('todaySports'));
         }
         $category= Category::with('subcategories')->where(['slug'=>$catSlug])->select('id','name','slug')->first();
-        $catContents = Content::where(['category_id'=>$category->id])->orderBy('id','desc')->paginate(18);
+        $catContents = Content::with('author')->where(['category_id'=>$category->id])->orderBy('id','desc')->paginate(18);
         return view('frontend.pages.category.category_content',compact('category','catContents'));
     }
     public function catWiseSubContent($category,$subcategory){
         $subcategory = Subcategory::with(['category'])->whereRelation('category', 'slug', $category)->where(['name'=>$subcategory])->first();
-        $catSubContents = Content::with(['category', 'subcategory'])->where(['category_id'=>$subcategory->category_id,'subcategory_id'=>$subcategory->id])->paginate(18);
+        $catSubContents = Content::with(['category', 'subcategory','author'])->where(['category_id'=>$subcategory->category_id,'subcategory_id'=>$subcategory->id])->paginate(18);
         return view('frontend.pages.category.cat_subcat_content',compact('catSubContents','subcategory'));
     }
     public function categoryWiseContentDetails($category_slug,$subcategory_name,$title_slug){
-        $content = Content::with(['category', 'subcategory'])->whereRelation('category', 'slug', $category_slug)->whereRelation('subcategory', 'name', $subcategory_name)->where('slug', $title_slug)->firstOrFail();
+        $content = Content::with(['category', 'subcategory','author'])->whereRelation('category', 'slug', $category_slug)->whereRelation('subcategory', 'name', $subcategory_name)->where('slug', $title_slug)->firstOrFail();
         $content->increment('visitor_count');
-        $moreContents = Content::with(['category', 'subcategory'])->whereRelation('category', 'slug', $category_slug)->whereRelation('subcategory', 'name', $subcategory_name)->where('slug', '!=', $title_slug)->limit(6)->get();
+        $moreContents = Content::with(['category', 'subcategory','author'])->whereRelation('category', 'slug', $category_slug)->whereRelation('subcategory', 'name', $subcategory_name)->where('slug', '!=', $title_slug)->limit(6)->get();
         return view('frontend.pages.content.content_details',compact('content','moreContents'));
     }
     public function today_cat_sports($slug){
@@ -76,10 +76,11 @@ class HomeController extends Controller
     public function contentSearch(Request $request){
         $searchTerm = $request->input('search');
         $contents = Content::query()
-            ->select('id', 'category_id', 'subcategory_id', 'title', 'slug', 'image', 'details', 'created_at')
+            ->select('id', 'category_id', 'subcategory_id','author_id', 'title', 'slug', 'image', 'details', 'created_at')
             ->with([
                 'category:id,name,slug',
                 'subcategory:id,category_id,name',
+                'author:id,name',
             ])
             ->when($searchTerm, function ($query) use ($searchTerm) {
                 $query->where(function ($q) use ($searchTerm) {
@@ -94,10 +95,11 @@ class HomeController extends Controller
     public function tagSearch(Request $request){
         $searchTerm = $request->input('search');
         $contents = Content::query()
-            ->select('id', 'category_id', 'subcategory_id', 'title', 'slug', 'image', 'details', 'created_at')
+            ->select('id', 'category_id', 'subcategory_id','author_id', 'title', 'slug', 'image', 'details', 'created_at')
             ->with([
                 'category:id,name,slug',
                 'subcategory:id,category_id,name',
+                'author:id,name',
             ])
             ->when($searchTerm, function ($query) use ($searchTerm) {
                 $query->where(function ($q) use ($searchTerm) {

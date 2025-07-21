@@ -61,40 +61,42 @@
                             <div class="card-title text-danger">Gallery Lists</div>
                         </div>
                         <div class="card-body">
-                            <table id="galleriesTable" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>TITLE</th>
-                                        <th>IMAGE</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($galleries as $gallery)
+                            <div style="overflow-x:auto; width:100%;">
+                                <table id="galleriesTable" class="table table-bordered table-striped">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ Str::limit($gallery->title ?? '', 20) }}</td>
-                                            <td>
-                                                <img class="content-image" src="{{ asset('/storage/assets/images/gallery/' . ($gallery->image ?? 'gallery.png')) }}" alt="gallery-image">
-                                            </td>
-                                            <td>
-                                                <a class="" href="{{ route('galleries.edit',$gallery->id) }}" data-toggle="tooltip" data-placement="top" title="Gallery Edit"><i class="fa fa-edit text-danger"></i></a>
-                                                <a class="px-3" href="{{ route('galleries.show',$gallery->id) }}" data-toggle="tooltip" data-placement="top" title="Gallery Show"><i class="fa fa-eye text-danger"></i></a>
-                                                @if(Auth::user()->is_role !== 'editor')
-                                                    <form action="{{ route('galleries.destroy', $gallery->id) }}" method="post" class="d-inline-block">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-link text-danger p-0" data-toggle="tooltip" data-placement="top" title="User Delete">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                            </td>
+                                            <th>SL</th>
+                                            <th>TITLE</th>
+                                            <th>IMAGE</th>
+                                            <th class="text-center">ACTION</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($galleries as $gallery)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ Str::limit($gallery->title ?? '', 20) }}</td>
+                                                <td>
+                                                    <img class="content-image" src="{{ asset('/storage/assets/images/gallery/' . ($gallery->image ?? 'gallery.png')) }}" alt="gallery-image">
+                                                </td>
+                                                <td class="d-flex justify-content-center">
+                                                    <a class="" href="{{ route('galleries.edit',$gallery->id) }}" data-toggle="tooltip" data-placement="top" title="Gallery Edit"><i class="fa fa-edit text-danger"></i></a>
+                                                    <a class="px-3" href="{{ route('galleries.show',$gallery->id) }}" data-toggle="tooltip" data-placement="top" title="Gallery Show"><i class="fa fa-eye text-danger"></i></a>
+                                                    @if(Auth::user()->is_role !== 'editor')
+                                                        <form action="{{ route('galleries.destroy', $gallery->id) }}" method="post" class="d-inline-block">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-link text-danger p-0" data-toggle="tooltip" data-placement="top" title="User Delete">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

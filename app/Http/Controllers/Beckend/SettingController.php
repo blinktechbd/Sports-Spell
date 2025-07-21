@@ -7,6 +7,7 @@ use App\Models\Setting;
 use App\Services\Services;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class SettingController extends Controller
@@ -95,7 +96,7 @@ class SettingController extends Controller
     }
 
     public function profile_settings(Request $request){
-        $user = User::where(['is_role'=>'admin'])->first();
+        $user = User::findOrFail(Auth::id());
         if ($request->isMethod('post')) {
             $user->name = $request->name;
             $user->email = $request->email;

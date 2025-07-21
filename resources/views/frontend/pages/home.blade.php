@@ -26,7 +26,7 @@
         <div class="container-fluid">
             <div class="container">
                 <div class="header-bottom-ad">
-                    <img src="{{ asset('/storage/assets/images/ads/header-bottom-ad.jpg') }}" alt="header-bottom-ad">
+                    <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_special_header_top) }}" alt="header-bottom-ad">
                 </div>
             </div>
         </div>
@@ -65,7 +65,7 @@
                                                 alt="{{ $specialConts[0]['slug'] }}">
                                             <div class="card-body">
                                                 <small class="text-muted">{{ bangla_date($specialConts[0]['created_at']) }} |
-                                                    অ্যাডমিন</small>
+                                                    {{ $specialConts[0]['author']['name'] ?? ''}}</small>
                                                 <h4 class="card-title my-2 text-danger">
                                                    {{ Str::limit($specialConts[0]['title'], 40) }}
                                                 </h4>
@@ -87,7 +87,7 @@
                                                 alt="{{ $specialConts[1]['slug'] }}">
                                             <div class="card-body px-2">
                                                 <small class="text-muted">{{ bangla_date($specialConts[1]['created_at']) }} |
-                                                    অ্যাডমিন</small>
+                                                    {{ $specialConts[1]['author']['name'] ?? ''}}</small>
                                                 <h6 class="card-title my-2 text-danger">
                                                     {{ Str::limit($specialConts[1]['title'], 25) }}
                                                 </h6>
@@ -107,7 +107,7 @@
                                                 alt="{{ $specialConts[2]['slug'] }}">
                                             <div class="card-body px-2">
                                                 <small class="text-muted">{{ bangla_date($specialConts[2]['created_at']) }} |
-                                                    অ্যাডমিন</small>
+                                                    {{ $specialConts[2]['author']['name'] ?? ''}}</small>
                                                 <h6 class="card-title my-2 text-danger">
                                                     {{ Str::limit($specialConts[2]['title'], 25) }}
                                                 </h6>
@@ -129,7 +129,7 @@
                                                 alt="{{ $specialConts[3]['slug'] }}">
                                             <div class="card-body px-2">
                                                 <small class="text-muted">{{ bangla_date($specialConts[3]['created_at']) }} |
-                                                    অ্যাডমিন</small>
+                                                    {{ $specialConts[3]['author']['name'] ?? ''}}</small>
                                                 <h6 class="card-title my-2 text-danger">
                                                     {{ Str::limit($specialConts[3]['title'], 25) }}
                                                 </h6>
@@ -151,7 +151,7 @@
                                                 alt="{{ $specialConts[4]['slug'] }}">
                                             <div class="card-body px-2">
                                                 <small class="text-muted">{{ bangla_date($specialConts[4]['created_at']) }} |
-                                                    অ্যাডমিন</small>
+                                                    {{ $specialConts[4]['author']['name'] ?? ''}}</small>
                                                 <h6 class="card-title my-2 text-danger">
                                                     {{ Str::limit($specialConts[4]['title'], 25) }}
                                                 </h6>
@@ -173,7 +173,7 @@
                                                 alt="{{ $specialConts[5]['slug'] }}">
                                             <div class="card-body px-2">
                                                 <small class="text-muted">{{ bangla_date($specialConts[5]['created_at']) }} |
-                                                    অ্যাডমিন</small>
+                                                    {{ $specialConts[5]['author']['name'] ?? ''}}</small>
                                                 <h6 class="card-title my-2 text-danger">
                                                     {{ Str::limit($specialConts[5]['title'], 25) }}
                                                 </h6>
@@ -196,7 +196,7 @@
     <div class="container-fluid">
         <div class="container">
             <div class="header-bottom-ad">
-                <img src="{{ asset('/storage/assets/images/ads/header-bottom-ad.jpg') }}" alt="header-bottom-ad">
+                <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_special_header_top) }}" alt="header-bottom-ad">
             </div>
         </div>
     </div>
@@ -218,7 +218,7 @@
                                             alt="{{ $contents[0]['slug'] }}">
                                         <div class="card-body">
                                             <small class="text-muted">{{ bangla_date($contents[0]['created_at']) }} |
-                                                অ্যাডমিন</small>
+                                                {{ $contents[0]['author']['name'] ?? ''}}</small>
                                             <h4 class="card-title my-2 text-danger">
                                                 {{ Str::limit($contents[0]['title'], 40) }}
                                             </h4>
@@ -241,10 +241,10 @@
                                             alt="{{ $contents[1]['slug'] }}">
                                         <div class="card-body px-2">
                                             <small class="text-muted">{{ bangla_date($contents[1]['created_at']) }} |
-                                                অ্যাডমিন</small>
-                                            <h5 class="card-title my-2 text-danger">
+                                                {{ $contents[1]['author']['name'] ?? ''}}</small>
+                                            <h6 class="card-title my-2 text-danger">
                                                 {{ Str::limit($contents[1]['title'], 25) }}
-                                            </h5>
+                                            </h6>
                                             <p class="card-text text-muted">
                                                 {{ Str::limit(strip_tags($contents[1]['details']), 50) }}
                                             </p>
@@ -261,10 +261,10 @@
                                             alt="{{ $contents[2]['slug'] }}">
                                         <div class="card-body px-2">
                                             <small class="text-muted">{{ bangla_date($contents[2]['created_at']) }} |
-                                                অ্যাডমিন</small>
-                                            <h5 class="card-title my-2 text-danger">
+                                                {{ $contents[2]['author']['name'] ?? ''}}</small>
+                                            <h6 class="card-title my-2 text-danger">
                                                 {{ Str::limit($contents[2]['title'], 25) }}
-                                            </h5>
+                                            </h6>
                                             <p class="card-text text-muted">
                                                 {{ Str::limit(strip_tags($contents[2]['details']), 50) }}
                                             </p>
@@ -283,10 +283,10 @@
                                             alt="{{ $contents[3]['slug'] }}">
                                         <div class="card-body px-2">
                                             <small class="text-muted">{{ bangla_date($contents[3]['created_at']) }} |
-                                                অ্যাডমিন</small>
-                                            <h5 class="card-title my-2 text-danger">
+                                                {{ $contents[3]['author']['name'] ?? ''}}</small>
+                                            <h6 class="card-title my-2 text-danger">
                                                 {{ Str::limit($contents[3]['title'], 25) }}
-                                            </h5>
+                                            </h6>
                                             <p class="card-text text-muted">
                                                 {{ Str::limit(strip_tags($contents[3]['details']), 50) }}
                                             </p>
@@ -305,10 +305,10 @@
                                             alt="{{ $contents[4]['slug'] }}">
                                         <div class="card-body px-2">
                                             <small class="text-muted">{{ bangla_date($contents[4]['created_at']) }} |
-                                                অ্যাডমিন</small>
-                                            <h5 class="card-title my-2 text-danger">
+                                                {{ $contents[4]['author']['name'] ?? ''}}</small>
+                                            <h6 class="card-title my-2 text-danger">
                                                 {{ Str::limit($contents[4]['title'], 25) }}
-                                            </h5>
+                                            </h6>
                                             <p class="card-text text-muted">
                                                 {{ Str::limit(strip_tags($contents[4]['details']), 50) }}
                                             </p>
@@ -327,10 +327,10 @@
                                             alt="{{ $contents[5]['slug'] }}">
                                         <div class="card-body px-2">
                                             <small class="text-muted">{{ bangla_date($contents[5]['created_at']) }} |
-                                                অ্যাডমিন</small>
-                                            <h5 class="card-title my-2 text-danger">
+                                                {{ $contents[5]['author']['name'] ?? ''}}</small>
+                                            <h6 class="card-title my-2 text-danger">
                                                 {{ Str::limit($contents[5]['title'], 25) }}
-                                            </h5>
+                                            </h6>
                                             <p class="card-text text-muted">
                                                 {{ Str::limit(strip_tags($contents[5]['details']), 50) }}
                                             </p>
@@ -349,10 +349,10 @@
                                         <div class="top"></div>
                                         <div class="bottom"></div>
                                         <div class="category">
-                                            <h5 class=""><a
+                                            <h6 class=""><a
                                                     href="{{ route('category-wise-content', $topCat->slug) }}"
                                                     class="text-decoration-none text-danger">{{ $topCat->name ?? '' }}</a>
-                                            </h5>
+                                            </h6>
                                         </div>
                                     </div>
                                     <div class="tab d-flex gap-3">
@@ -378,7 +378,7 @@
                                                     alt="featured-image">
                                                 <div class="card-body">
                                                     <small class="text-muted">
-                                                        {{ bangla_date($leftContent['created_at']) }} | অ্যাডমিন
+                                                        {{ bangla_date($leftContent['created_at']) }} | {{ $leftContent['author']['name'] ?? ''}}
                                                     </small>
                                                     <h4 class="card-title my-2 text-danger">
                                                         {{ Str::limit($leftContent['title'], 40) }}
@@ -405,11 +405,11 @@
                                                         alt="featured-image">
                                                     <div class="card-body px-2">
                                                         <small class="text-muted">
-                                                            {{ bangla_date($content['created_at']) }} | অ্যাডমিন
+                                                            {{ bangla_date($content['created_at']) }} | {{ $content['author']['name'] ?? ''}}
                                                         </small>
-                                                        <h5 class="card-title my-2 text-danger">
+                                                        <h6 class="card-title my-2 text-danger">
                                                             {{ Str::limit($content['title'], 25) }}
-                                                        </h5>
+                                                        </h6>
                                                         <p class="card-text text-muted">
                                                             {{ Str::limit(strip_tags($content['details']), 50) }}
                                                         </p>
@@ -437,7 +437,7 @@
 
                     {{-- special-content-right-ad --}}
                     <div class="special-content-right-ad">
-                        <img src="{{ asset('/storage/assets/images/ads/special-content-right-top-ad.gif') }}"
+                        <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_sidebar_ad_one) }}"
                             alt="special-content-right-ad">
                     </div>
 
@@ -494,7 +494,13 @@
 
                     {{-- special-content-right-ad --}}
                     <div class="special-content-right-ad my-2">
-                        <img src="{{ asset('/storage/assets/images/ads/special-content-right-bottom1-ad.jpg') }}"
+                        <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_sidebar_ad_two) }}"
+                            alt="special-content-right-bottom1-ad">
+                    </div>
+
+                    {{-- special-content-right-ad --}}
+                    <div class="special-content-right-ad my-2">
+                        <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_sidebar_ad_three) }}"
                             alt="special-content-right-bottom1-ad">
                     </div>
                 </div>
@@ -508,7 +514,7 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-sm-10">
                     <div class="header-bottom-ad">
-                        <img src="{{ asset('/storage/assets/images/ads/header-bottom-ad.jpg') }}"
+                        <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_category_bottom) }}"
                             alt="header-bottom-ad">
                     </div>
                 </div>
@@ -556,7 +562,7 @@
                                                         alt="{{ $mainContent->title }}">
                                                     <div class="card-body">
                                                         <small class="text-muted">
-                                                            {{ bangla_date($mainContent->created_at) }} | অ্যাডমিন
+                                                            {{ bangla_date($mainContent->created_at) }} | {{ $mainContent['author']['name'] ?? ''}}
                                                         </small>
                                                         <h4 class="card-title my-2 text-danger">
                                                             {{ Str::limit($mainContent->title, 30) }}
@@ -580,11 +586,11 @@
                                                         alt="{{ $content->title }}">
                                                     <div class="card-body px-2">
                                                         <small class="text-muted">
-                                                            {{ bangla_date($content->created_at) }} | অ্যাডমিন
+                                                            {{ bangla_date($content->created_at) }} | {{ $content['author']['name'] ?? ''}}
                                                         </small>
-                                                        <h5 class="card-title my-2 text-danger">
+                                                        <h6 class="card-title my-2 text-danger">
                                                             {{ Str::limit($content->title, 30) }}
-                                                        </h5>
+                                                        </h6>
                                                     </div>
                                                 </div>
                                             </a>
@@ -600,7 +606,7 @@
                             <div class="row d-flex justify-content-center">
                                 <div class="col-sm-10">
                                     <div class="header-bottom-ad">
-                                        <img src="{{ asset('/storage/assets/images/ads/header-bottom-ad.jpg') }}"
+                                        <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_double_category_bottom) }}"
                                             alt="header-bottom-ad">
                                     </div>
                                 </div>

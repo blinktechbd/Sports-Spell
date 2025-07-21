@@ -73,7 +73,7 @@
                                     <div class="form-group" data-toggle="tooltip" data-placement="top"
                                         title="Category Name">
                                         <input type="text" class="form-control form-control-danger"
-                                            value="{{ $content->category->name }}" readonly>
+                                            value="{{ $content->category->name ?? '' }}" readonly>
                                     </div>
 
                                 </div>
@@ -81,7 +81,14 @@
                                     <div class="form-group" data-toggle="tooltip" data-placement="top"
                                         title="Subcategory Name">
                                         <input type="text" class="form-control form-control-danger"
-                                            value="{{ $content->subcategory->name }}" readonly>
+                                            value="{{ $content->subcategory->name ?? '' }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <div class="form-group" data-toggle="tooltip" data-placement="top"
+                                        title="Author Name">
+                                        <input type="text" class="form-control form-control-danger"
+                                            value="{{ $content->author->name ?? '' }}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-12 mb-3">
@@ -99,6 +106,12 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-12 mb-3">
+                                        <input type="text" name="caption"
+                                            class="form-control form-control-danger @error('caption') is-invalid @enderror"
+                                            placeholder="Image Caption" data-toggle="tooltip" data-placement="top"
+                                            title="Image Caption" value="{{ $content->caption ?? '' }}" readonly/>
+                                </div>
                                 <div class="col-12 mb-2">
                                     <div class="form-group" data-toggle="tooltip" data-placement="top"
                                         title="Content Details">
@@ -114,6 +127,19 @@
                                             value="{{ implode(',', json_decode($content->tags, true)) }}" disabled>
                                     </div>
                                 </div>
+                                <div class="col-12 mb-3">
+                                    <input type="text" name="visitor_count"
+                                        class="form-control form-control-danger @error('visitor_count') is-invalid @enderror"
+                                        placeholder="Visitor Count" data-toggle="tooltip" data-placement="top"
+                                        title="Visitor Count" value="{{ $content->visitor_count ?? '' }}" readonly/>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <input type="text" name="created_at"
+                                        class="form-control form-control-danger @error('created_at') is-invalid @enderror"
+                                        placeholder="Created at" data-toggle="tooltip" data-placement="top"
+                                        title="Created at" value="{{ Carbon\Carbon::parse($content->created_at)->format('Y-m-d h:i A') ?? '' }}" readonly/>
+                                </div>
+
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-end">

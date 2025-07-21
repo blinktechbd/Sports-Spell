@@ -113,7 +113,7 @@
     <div class="container-fluid">
         <div class="container">
             <div class="header-bottom-ad">
-                <img src="{{ asset('/storage/assets/images/ads/header-bottom-ad.jpg') }}" alt="header-bottom-ad">
+                <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_special_header_top) }}" alt="header-bottom-ad">
             </div>
         </div>
     </div>
@@ -123,7 +123,7 @@
         <div class="container">
             <div class="row menu-listing">
                 <div class="col-lg-12 d-flex gap-2">
-                    <h5 class="text-danger">&#128973; <a href="{{ route('photoGalleries') }}"
+                    <h5 class="text-danger"><a href="{{ route('photoGalleries') }}"
                                 class="text-danger">গ্যালারি</a></h5>
                 </div>
             </div>

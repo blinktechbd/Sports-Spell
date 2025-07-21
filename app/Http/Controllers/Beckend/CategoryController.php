@@ -85,7 +85,10 @@ class CategoryController extends Controller
         if($validated['type'] == 'special'){
            Category::where(['type'=>'special','status'=>'active'])->update(['status' => 'inactive']);
            $category->sort_order = $validated['sort_order'];
+        }else{
+            $category->sort_order = $validated['sort_order'];
         }
+
         $category->name = $validated['name'];
         $category->type = $validated['type'];
         $category->slug = str_replace(' ', '-', $validated['name']);

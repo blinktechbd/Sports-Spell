@@ -57,60 +57,62 @@
                             <div class="card-title text-danger">Vote Poll Lists</div>
                         </div>
                         <div class="card-body">
-                            <table id="votePollsTable" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>title</th>
-                                        <th>TOTAL VOTE</th>
-                                        <th>Status</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($votePolls as $votePoll)
+                            <div style="overflow-x:auto; width:100%;">
+                                <table id="votePollsTable" class="table table-bordered table-striped">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $votePoll->title ?? '' }}</td>
-                                            <td>{{ $votePoll->total_vote ?? '' }}</td>
-                                            <td>
-                                                @if($votePoll->status == 'active')
-                                                    <span class="badge badge-success">
-                                                        {{ $votePoll->status ?? '' }}
-                                                    </span>
-                                                @else
-                                                    <span class="badge badge-danger">
-                                                        {{ $votePoll->status ?? '' }}
-                                                    </span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a class="" href="{{ route('vote-polls.edit', $votePoll->id) }}"
-                                                    data-toggle="tooltip" data-placement="top" title="Vote Poll Edit"><i
-                                                        class="fa fa-edit text-danger"></i>
-                                                </a>
-                                                <a class="px-3" href="{{ route('vote-polls.show', $votePoll->id) }}"
-                                                    data-toggle="tooltip" data-placement="top" title="Vote Poll Show">
-                                                    <i class="fa fa-eye text-danger"></i>
-                                                </a>
-                                                @if(Auth::user()->is_role !== 'editor')
-                                                    <form action="{{ route('vote-polls.destroy', $votePoll->id) }}"
-                                                        method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline"
-                                                            data-toggle="tooltip" data-placement="top"
-                                                            title="Vote Poll Delete"
-                                                            onclick="return confirm('Are you sure?')">
-                                                            <i class="fa fa-trash text-danger"></i>
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                            </td>
+                                            <th>SL</th>
+                                            <th>title</th>
+                                            <th>TOTAL VOTE</th>
+                                            <th>Status</th>
+                                            <th class="text-center">ACTION</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($votePolls as $votePoll)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $votePoll->title ?? '' }}</td>
+                                                <td>{{ $votePoll->total_vote ?? '' }}</td>
+                                                <td>
+                                                    @if($votePoll->status == 'active')
+                                                        <span class="badge badge-success">
+                                                            {{ $votePoll->status ?? '' }}
+                                                        </span>
+                                                    @else
+                                                        <span class="badge badge-danger">
+                                                            {{ $votePoll->status ?? '' }}
+                                                        </span>
+                                                    @endif
+                                                </td>
+                                                <td class="d-flex justify-content-center">
+                                                    <a class="" href="{{ route('vote-polls.edit', $votePoll->id) }}"
+                                                        data-toggle="tooltip" data-placement="top" title="Vote Poll Edit"><i
+                                                            class="fa fa-edit text-danger"></i>
+                                                    </a>
+                                                    <a class="px-3" href="{{ route('vote-polls.show', $votePoll->id) }}"
+                                                        data-toggle="tooltip" data-placement="top" title="Vote Poll Show">
+                                                        <i class="fa fa-eye text-danger"></i>
+                                                    </a>
+                                                    @if(Auth::user()->is_role !== 'editor')
+                                                        <form action="{{ route('vote-polls.destroy', $votePoll->id) }}"
+                                                            method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline"
+                                                                data-toggle="tooltip" data-placement="top"
+                                                                title="Vote Poll Delete"
+                                                                onclick="return confirm('Are you sure?')">
+                                                                <i class="fa fa-trash text-danger"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

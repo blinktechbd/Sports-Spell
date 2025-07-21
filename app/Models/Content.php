@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Content extends Model
 {
-    protected $fillable = ['category_id','subcategory_id','title','slug','image','details','tags','visitor_count'];
+    protected $fillable = ['category_id','subcategory_id','author_id','title','slug','image','caption','details','tags','visitor_count'];
 
     public function category()
     {
@@ -15,6 +15,10 @@ class Content extends Model
     public function subcategory()
     {
         return $this->belongsTo(Subcategory::class);
+    }
+    public function author()
+    {
+        return $this->belongsTo(Author::class);
     }
 }
 

@@ -59,7 +59,7 @@
                                                 data-dropdown-css-class="select2-danger" style="width: 100%;">
                                                 <option value="">Category Select</option>
                                                 @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('category_id')
@@ -74,7 +74,7 @@
                                             <input type="text" name="match_type"
                                                 class="form-control form-control-danger @error('match_type') is-invalid @enderror"
                                                 placeholder="Match Type" data-toggle="tooltip" data-placement="top"
-                                                title="Match Type Like (ODI Match...)" />
+                                                title="Match Type Like (ODI Match...)" value="{{ old('match_type') }}"/>
                                             @error('match_type')
                                                 <div class="invalid-feedback d-block">
                                                     {{ $message }}
@@ -87,7 +87,7 @@
                                             <input type="text" name="match_title"
                                                 class="form-control form-control-danger @error('match_title') is-invalid @enderror"
                                                 placeholder="Match Title" data-toggle="tooltip" data-placement="top"
-                                                title="Match Title" />
+                                                title="Match Title" value="{{ old('match_title') }}"/>
                                             @error('match_title')
                                                 <div class="invalid-feedback d-block">
                                                     {{ $message }}
@@ -100,7 +100,7 @@
                                             <input type="text" name="match_stadium"
                                                 class="form-control form-control-danger @error('match_stadium') is-invalid @enderror"
                                                 placeholder="Match Venue" data-toggle="tooltip" data-placement="top"
-                                                title="Match Venue" />
+                                                title="Match Venue" value="{{ old('match_stadium') }}"/>
                                             @error('match_stadium')
                                                 <div class="invalid-feedback d-block">
                                                     {{ $message }}
@@ -113,7 +113,7 @@
                                             <input type="datetime-local" id="datetime" name="match_time"
                                                 class="form-control form-control-danger @error('match_time') is-invalid @enderror"
                                                 placeholder="Match Time" data-toggle="tooltip" data-placement="top"
-                                                title="Match Time (Bangladesh Time)" />
+                                                title="Match Time (Bangladesh Time)" value="{{ old('match_time') }}"/>
                                             @error('match_time')
                                                 <div class="invalid-feedback d-block">
                                                     {{ $message }}
@@ -124,15 +124,14 @@
                                     <div class="col-12 mb-3">
                                         <div class="form-group">
                                             <select name="status" class="form-control form-control-danger">
-                                                <option value="active">Active</option>
-                                                <option value="inactive">Inactive</option>
+                                                <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
+                                                <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="col-12">
-                                        <p class="text-center text-danger"> ----------------- VOTE OPTIONS [Multiple Add &
-                                            Remove] -----------------</p>
+                                        <p class="text-center text-danger"> ----------------- VOTE OPTIONS [Multiple Add & Remove] -----------------</p>
                                             @foreach(old('option', ['']) as $index => $value)
                                                 <div class="row mb-3">
                                                     <div class="col-11">

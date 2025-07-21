@@ -113,7 +113,7 @@
     <div class="container-fluid">
         <div class="container">
             <div class="header-bottom-ad">
-                <img src="{{ asset('/storage/assets/images/ads/header-bottom-ad.jpg') }}" alt="header-bottom-ad">
+                <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_special_header_top) }}" alt="header-bottom-ad">
             </div>
         </div>
     </div>
@@ -125,13 +125,13 @@
                 <div class="col-lg-12 d-flex gap-4">
                     @if (optional($category->subcategories)->isNotEmpty())
                         @foreach ($category->subcategories as $subcategory)
-                            <p class="text-danger">&#128973; <a
+                            <p class="text-danger"><a
                                         href="{{ route('cat-wise-sub-content', [$subcategory->category?->slug, $subcategory?->name]) }}"
                                         class="text-danger">{{ $subcategory?->name ?? '' }}</a></p>
                         @endforeach
                     @else
 
-                        <p class="text-danger">&#128973; <a href="{{ route('category-wise-content', $category->slug) }}"
+                        <p class="text-danger"><a href="{{ route('category-wise-content', $category->slug) }}"
                                     class="text-danger">{{ $category->name ?? '' }}</a></p>
                     @endif
                 </div>
@@ -158,7 +158,7 @@
                                         <div class="card-body">
                                             <small
                                                 class="text-muted">{{ bangla_date($catContents[0]['created_at']) }} |
-                                                    অ্যাডমিন</small>
+                                                    {{ $catContents[0]['author']['name'] ?? ''}}</small>
                                             <h4 class="card-title my-2 text-danger">
                                                 {{ Str::limit($catContents[0]->title, 40) }}
                                             </h4>
@@ -182,10 +182,10 @@
                                         <div class="card-body px-2">
                                             <small
                                                 class="text-muted">{{ bangla_date($catContent['created_at']) }} |
-                                                    অ্যাডমিন</small>
-                                            <h5 class="card-title my-2 text-danger">
+                                                    {{ $catContent['author']['name'] ?? ''}}</small>
+                                            <h6 class="card-title my-2 text-danger">
                                                 {{ Str::limit($catContent->title, 25) }}
-                                            </h5>
+                                            </h6>
                                             <p class="card-text text-muted">
                                                 {{ Str::limit(strip_tags(html_entity_decode($catContent->details)), 50) }}
                                             </p>
@@ -206,10 +206,10 @@
                                         <div class="card-body px-2">
                                             <small
                                                 class="text-muted">{{ bangla_date($catContent['created_at']) }} |
-                                                    অ্যাডমিন</small>
-                                            <h5 class="card-title my-2 text-danger">
+                                                    {{ $catContent['author']['name'] ?? ''}}</small>
+                                            <h6 class="card-title my-2 text-danger">
                                                {{ Str::limit($catContent->title, 25) }}
-                                            </h5>
+                                            </h6>
                                             <p class="card-text text-muted">
                                                 {{ Str::limit(strip_tags(html_entity_decode($catContent->details)), 50) }}
                                             </p>
@@ -305,7 +305,7 @@
 
                     {{-- special-content-right-ad --}}
                     <div class="special-content-right-ad my-5">
-                        <img src="{{ asset('/storage/assets/images/ads/special-content-right-top-ad.gif') }}"
+                        <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_sidebar_ad_one) }}"
                             alt="special-content-right-ad">
                     </div>
 

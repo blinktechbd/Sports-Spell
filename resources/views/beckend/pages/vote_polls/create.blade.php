@@ -42,7 +42,7 @@
                                             <input type="text" name="title"
                                                 class="form-control form-control-danger @error('title') is-invalid @enderror"
                                                 placeholder="Vote Poll Title" data-toggle="tooltip" data-placement="top"
-                                                title="Vote Poll Title" />
+                                                title="Vote Poll Title" value="{{ old('title') }}"/>
                                             @error('title')
                                                 <div class="invalid-feedback d-block">
                                                     {{ $message }}
@@ -53,8 +53,8 @@
                                     <div class="col-12 mb-3">
                                         <div class="form-group">
                                             <select name="status" class="form-control form-control-danger">
-                                                <option value="active">Active</option>
-                                                <option value="inactive">Inactive</option>
+                                                <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
+                                                <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
                                             </select>
                                         </div>
                                     </div>

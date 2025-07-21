@@ -155,77 +155,97 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{ request()->routeIs('users.*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                        <i class="nav-icon fa fa-list"></i>
-                        <p>
-                            Users
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('users.create') }}" class="nav-link {{ request()->routeIs('users.create') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Create</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Lists</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item {{ request()->routeIs('authors.*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ request()->routeIs('authors.*') ? 'active' : '' }}">
-                        <i class="nav-icon fa fa-list"></i>
-                        <p>
-                            Authors
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('authors.create') }}" class="nav-link {{ request()->routeIs('authors.create') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Create</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('authors.index') }}" class="nav-link {{ request()->routeIs('authors.index') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Lists</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item {{ request()->routeIs('commentLists') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ request()->routeIs('commentLists') ? 'active' : '' }}">
-                        <i class="nav-icon fa fa-list"></i>
-                        <p>
-                            Comments
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('commentLists') }}" class="nav-link {{ request()->routeIs('commentLists') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Lists</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('settings') }}" class="nav-link {{ request()->routeIs('settings') ? 'active' : '' }}">
-                        <i class="nav-icon fa fa-cog"></i>
-                        <p>
-                            Settings
-                        </p>
-                    </a>
-                </li>
+
+                @if (Auth::user()->is_role !== 'editor')
+                    <li class="nav-item {{ request()->routeIs('users.*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-list"></i>
+                            <p>
+                                Users
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('users.create') }}" class="nav-link {{ request()->routeIs('users.create') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Create</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Lists</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item {{ request()->routeIs('authors.*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->routeIs('authors.*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-list"></i>
+                            <p>
+                                Authors
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('authors.create') }}" class="nav-link {{ request()->routeIs('authors.create') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Create</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('authors.index') }}" class="nav-link {{ request()->routeIs('authors.index') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Lists</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item {{ request()->routeIs('admanagements') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->routeIs('admanagements') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-list"></i>
+                            <p>
+                                Ad Management
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('admanagements') }}" class="nav-link {{ request()->routeIs('admanagements') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Ad Manage</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item {{ request()->routeIs('commentLists') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->routeIs('commentLists') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-list"></i>
+                            <p>
+                                Comments
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('commentLists') }}" class="nav-link {{ request()->routeIs('commentLists') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Lists</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('settings') }}" class="nav-link {{ request()->routeIs('settings') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-cog"></i>
+                            <p>
+                                Settings
+                            </p>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </nav>
     </div>

@@ -57,69 +57,71 @@
                             <div class="card-title text-danger">Today Sport Lists</div>
                         </div>
                         <div class="card-body">
-                            <table id="todaySportsTable" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>CATEGORY</th>
-                                        <th>MATCH TYPE</th>
-                                        <th>MATCH TITLE</th>
-                                        <th>VENUE</th>
-                                        <th>Date</th>
-                                        <th>TIME</th>
-                                        <th>DAY</th>
-                                        <th>TOTAL VOTE</th>
-                                        <th>Status</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($todaySports as $todaySport)
+                            <div style="overflow-x:auto; width:100%;">
+                                <table id="todaySportsTable" class="table table-bordered table-striped">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $todaySport->category->name ?? '' }}</td>
-                                            <td>{{ $todaySport->match_type ?? '' }}</td>
-                                            <td>{{ Str::limit($todaySport->match_title, 20) ?? '' }}</td>
-                                            <td>{{ Str::limit($todaySport->match_stadium, 20) ?? '' }}</td>
-                                            <td>{{ Carbon\Carbon::parse($todaySport->match_time)->format('d M Y') ?? '' }}</td>
-                                            <td>{{ Carbon\Carbon::parse($todaySport->match_time)->format('h:i A') ?? '' }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($todaySport->match_time)->locale('bn')->translatedFormat('l') ?? '' }}</td>
-                                            <td>{{ $todaySport->total_vote ?? '' }}</td>
-                                            <td>
-                                                @if($todaySport->status == 'active')
-                                                    <span class="badge badge-success">{{ $todaySport->status }}</span>
-                                                @else
-                                                    <span class="badge badge-danger">{{ $todaySport->status }}</span>
-                                                @endif
-
-                                            </td>
-                                            <td>
-                                                <a class="" href="{{ route('today-sports.edit', $todaySport->id) }}"
-                                                    data-toggle="tooltip" data-placement="top" title="Today Sport Edit"><i
-                                                        class="fa fa-edit text-danger"></i>
-                                                </a>
-                                                <a class="px-3" href="{{ route('today-sports.show', $todaySport->id) }}"
-                                                    data-toggle="tooltip" data-placement="top" title="Today Sport Show">
-                                                    <i class="fa fa-eye text-danger"></i>
-                                                </a>
-                                                @if(Auth::user()->is_role !== 'editor')
-                                                    <form action="{{ route('today-sports.destroy', $todaySport->id) }}"
-                                                        method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline"
-                                                            data-toggle="tooltip" data-placement="top"
-                                                            title="Today Sport Delete"
-                                                            onclick="return confirm('Are you sure?')">
-                                                            <i class="fa fa-trash text-danger"></i>
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                            </td>
+                                            <th>SL</th>
+                                            <th>CATEGORY</th>
+                                            <th>MATCH TYPE</th>
+                                            <th>MATCH TITLE</th>
+                                            <th>VENUE</th>
+                                            <th>Date</th>
+                                            <th>TIME</th>
+                                            <th>DAY</th>
+                                            <th>TOTAL VOTE</th>
+                                            <th>Status</th>
+                                            <th class="text-center">ACTION</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($todaySports as $todaySport)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $todaySport->category->name ?? '' }}</td>
+                                                <td>{{ $todaySport->match_type ?? '' }}</td>
+                                                <td>{{ Str::limit($todaySport->match_title, 20) ?? '' }}</td>
+                                                <td>{{ Str::limit($todaySport->match_stadium, 20) ?? '' }}</td>
+                                                <td>{{ Carbon\Carbon::parse($todaySport->match_time)->format('d M Y') ?? '' }}</td>
+                                                <td>{{ Carbon\Carbon::parse($todaySport->match_time)->format('h:i A') ?? '' }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($todaySport->match_time)->locale('bn')->translatedFormat('l') ?? '' }}</td>
+                                                <td>{{ $todaySport->total_vote ?? '' }}</td>
+                                                <td>
+                                                    @if($todaySport->status == 'active')
+                                                        <span class="badge badge-success">{{ $todaySport->status }}</span>
+                                                    @else
+                                                        <span class="badge badge-danger">{{ $todaySport->status }}</span>
+                                                    @endif
+
+                                                </td>
+                                                <td class="d-flex justify-content-center">
+                                                    <a class="" href="{{ route('today-sports.edit', $todaySport->id) }}"
+                                                        data-toggle="tooltip" data-placement="top" title="Today Sport Edit"><i
+                                                            class="fa fa-edit text-danger"></i>
+                                                    </a>
+                                                    <a class="px-3" href="{{ route('today-sports.show', $todaySport->id) }}"
+                                                        data-toggle="tooltip" data-placement="top" title="Today Sport Show">
+                                                        <i class="fa fa-eye text-danger"></i>
+                                                    </a>
+                                                    @if(Auth::user()->is_role !== 'editor')
+                                                        <form action="{{ route('today-sports.destroy', $todaySport->id) }}"
+                                                            method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline"
+                                                                data-toggle="tooltip" data-placement="top"
+                                                                title="Today Sport Delete"
+                                                                onclick="return confirm('Are you sure?')">
+                                                                <i class="fa fa-trash text-danger"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

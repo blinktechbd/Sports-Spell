@@ -53,7 +53,7 @@
                                             <select name="category_id" class="form-control select2 select2-danger @error('category_id') is-invalid @enderror" data-dropdown-css-class="select2-danger" style="width: 100%;">
                                                 <option value="">Category Select</option>
                                                 @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('category_id')
@@ -68,7 +68,7 @@
                                         <input type="text" name="name"
                                             class="form-control form-control-danger @error('name') is-invalid @enderror"
                                             placeholder="Subcategory Name" data-toggle="tooltip" data-placement="top"
-                                            title="Subcategory Name" />
+                                            title="Subcategory Name" value="{{ old('name') }}"/>
                                         @error('name')
                                             <div class="invalid-feedback d-block">
                                                 {{ $message }}

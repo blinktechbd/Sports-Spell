@@ -113,7 +113,7 @@
     <div class="container-fluid">
         <div class="container">
             <div class="header-bottom-ad">
-                <img src="{{ asset('/storage/assets/images/ads/header-bottom-ad.jpg') }}" alt="header-bottom-ad">
+                <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_special_header_top) }}" alt="header-bottom-ad">
             </div>
         </div>
     </div>
@@ -123,8 +123,8 @@
         <div class="container">
             <div class="row menu-listing">
                 <div class="col-lg-12 d-flex gap-4">
-                    <p class="text-danger">&#128973; <a href="{{ route('category-wise-content', $subcategory->category->slug) }}" class="text-danger">{{ $subcategory->category->name ?? '' }}</a></p>
-                    <p class="text-danger">&#128973; <a href="{{ route('cat-wise-sub-content',[$subcategory->category->slug,$subcategory->name]) }}" class="text-danger">{{ $subcategory->name ?? '' }}</a></p>
+                    <p class="text-danger"><a href="{{ route('category-wise-content', $subcategory->category->slug) }}" class="text-danger">{{ $subcategory->category->name ?? '' }}</a></p>
+                    <p class="text-danger"><a href="{{ route('cat-wise-sub-content',[$subcategory->category->slug,$subcategory->name]) }}" class="text-danger">{{ $subcategory->name ?? '' }}</a></p>
                 </div>
             </div>
         </div>
@@ -140,64 +140,73 @@
                         {{-- left content --}}
                         @if ($catSubContents->count() > 0)
                             <div class="col-sm-7 col-md-7 col-lg-8 mt-2">
-                                <div class="card border-0 shadow-sm special-left-content">
-                                    <img class="card-img-top"
-                                        src="{{ asset('storage/assets/images/blogs/' . $catSubContents[0]->image) }}"
-                                        alt="image-1">
-                                    <div class="card-body">
-                                        <small
-                                            class="text-muted">{{ bangla_date($catSubContents[0]['created_at']) }} |
-                                                    অ্যাডমিন</small>
-                                        <h4 class="card-title my-2 text-danger">
-                                            {{ Str::limit($catSubContents[0]->title, 40) }}
-                                        </h4>
-                                        <p class="card-text text-muted">
-                                            {{ Str::limit(strip_tags(html_entity_decode($catSubContents[0]->details)), 400) }}
-                                        </p>
+                                <a href="{{ route('categoryWiseContentDetails', [$catSubContents[0]?->category?->slug, $catSubContents[0]?->subcategory?->name, $catSubContents[0]?->slug]) }}"
+                                        class="text-decoration-none">
+                                    <div class="card border-0 shadow-sm special-left-content">
+                                        <img class="card-img-top"
+                                            src="{{ asset('storage/assets/images/blogs/' . $catSubContents[0]['image']) }}"
+                                            alt="image-1">
+                                        <div class="card-body">
+                                            <small
+                                                class="text-muted">{{ bangla_date($catSubContents[0]['created_at']) }} |
+                                                        {{ $catSubContents[0]['author']['name'] ?? ''}}</small>
+                                            <h4 class="card-title my-2 text-danger">
+                                                {{ Str::limit($catSubContents[0]['title'], 40) }}
+                                            </h4>
+                                            <p class="card-text text-muted">
+                                                {{ Str::limit(strip_tags(html_entity_decode($catSubContents[0]['details'])), 400) }}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         @endif
                         {{-- Middle content --}}
                         <div class="col-sm-5 col-md-5 col-lg-4 mt-2">
                             @foreach ($catSubContents->slice(1, 2) as $catSubContent)
-                                <div class="card border-0 shadow-sm special-middle-content mb-2">
-                                    <img class="card-img-top"
-                                        src="{{ asset('storage/assets/images/blogs/' . $catSubContent->image) }}"
-                                        alt="image-1">
-                                    <div class="card-body px-2">
-                                        <small
-                                            class="text-muted">{{ bangla_date($catSubContent->created_at) }} |
-                                                    অ্যাডমিন</small>
-                                        <h5 class="card-title my-2 text-danger">
-                                            {{ Str::limit($catSubContent->title, 25) }}
-                                        </h5>
-                                        <p class="card-text text-muted">
-                                            {{ Str::limit(strip_tags(html_entity_decode($catSubContent->details)), 50) }}
-                                        </p>
+                                <a href="{{ route('categoryWiseContentDetails', [$catSubContent?->category?->slug, $catSubContent?->subcategory?->name, $catSubContent?->slug]) }}"
+                                        class="text-decoration-none">
+                                    <div class="card border-0 shadow-sm special-middle-content mb-2">
+                                        <img class="card-img-top"
+                                            src="{{ asset('storage/assets/images/blogs/' . $catSubContent->image) }}"
+                                            alt="image-1">
+                                        <div class="card-body px-2">
+                                            <small
+                                                class="text-muted">{{ bangla_date($catSubContent->created_at) }} |
+                                                        {{ $catSubContent->author->name ?? ''}}</small>
+                                            <h6 class="card-title my-2 text-danger">
+                                                {{ Str::limit($catSubContent->title, 25) }}
+                                            </h6>
+                                            <p class="card-text text-muted">
+                                                {{ Str::limit(strip_tags(html_entity_decode($catSubContent->details)), 50) }}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             @endforeach
                         </div>
                         {{-- Smaller cards --}}
                         @foreach ($catSubContents->slice(4) as $catSubContent)
                             <div class="col-sm-6 col-md-4 col-lg-4 mt-2">
-                                <div class="card border-0 shadow-sm special-middle-content">
-                                    <img class="card-img-top"
-                                        src="{{ asset('storage/assets/images/blogs/' . $catSubContent->image) }}"
-                                        alt="image-1">
-                                    <div class="card-body px-2">
-                                        <small
-                                            class="text-muted">{{ bangla_date($catSubContent->created_at) }} |
-                                                    অ্যাডমিন</small>
-                                        <h5 class="card-title my-2 text-danger">
-                                            {{ Str::limit($catSubContent->title, 25) }}
-                                        </h5>
-                                        <p class="card-text text-muted">
-                                            {{ Str::limit(strip_tags(html_entity_decode($catSubContent->details)), 50) }}
-                                        </p>
+                                <a href="{{ route('categoryWiseContentDetails', [$catSubContent?->category?->slug, $catSubContent?->subcategory?->name, $catSubContent?->slug]) }}"
+                                        class="text-decoration-none">
+                                    <div class="card border-0 shadow-sm special-middle-content">
+                                        <img class="card-img-top"
+                                            src="{{ asset('storage/assets/images/blogs/' . $catSubContent->image) }}"
+                                            alt="image-1">
+                                        <div class="card-body px-2">
+                                            <small
+                                                class="text-muted">{{ bangla_date($catSubContent->created_at) }} |
+                                                        {{ $catSubContent->author->name ?? ''}}</small>
+                                            <h6 class="card-title my-2 text-danger">
+                                                {{ Str::limit($catSubContent->title, 25) }}
+                                            </h6>
+                                            <p class="card-text text-muted">
+                                                {{ Str::limit(strip_tags(html_entity_decode($catSubContent->details)), 50) }}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         @endforeach
 
@@ -287,7 +296,7 @@
 
                     {{-- special-content-right-ad --}}
                     <div class="special-content-right-ad my-5">
-                        <img src="{{ asset('/storage/assets/images/ads/special-content-right-top-ad.gif') }}"
+                        <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_sidebar_ad_one) }}"
                             alt="special-content-right-ad">
                     </div>
 

@@ -56,50 +56,38 @@
                             <div class="card-title text-danger">Author Lists</div>
                         </div>
                         <div class="card-body">
-                            <table id="authorsTable" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>NAME</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($authors as $author)
+                            <div style="overflow-x:auto; width:100%;">
+                                <table id="authorsTable" class="table table-bordered table-striped">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $author->name ?? '' }}</td>
-                                            <td>
-                                                @if(Auth::check() && Auth::user()->is_role == 'superadmin')
+                                            <th>SL</th>
+                                            <th>NAME</th>
+                                            <th class="text-center">ACTION</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($authors as $author)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $author->name ?? '' }}</td>
+                                                <td class="d-flex justify-content-center">
+                                                    <a class="pr-3" href="{{ route('authors.edit',$author->id) }}" data-toggle="tooltip" data-placement="top" title="Author Edit"><i class="fa fa-edit text-danger"></i></a>
 
-                                                <a class="pr-3" href="{{ route('authors.edit',$author->id) }}" data-toggle="tooltip" data-placement="top" title="User Edit"><i class="fa fa-edit text-danger"></i></a>
-
-                                                <form action="{{ route('authors.destroy', $author->id) }}" method="post" class="d-inline-block">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-link text-danger p-0" data-toggle="tooltip" data-placement="top" title="Author Delete">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </form>
-
-                                                @elseif(Auth::user()->is_role == 'admin')
-                                                    @if($user->is_role == 'editor')
-                                                        <a class="pr-3" href="{{ route('authors.edit',$author->id) }}" data-toggle="tooltip" data-placement="top" title="Author Edit"><i class="fa fa-edit text-danger"></i></a>
-                                                        <form action="{{ route('authors.destroy', $user->id) }}" method="post" class="d-inline-block">
+                                                    @if(Auth::user()->is_role !== 'editor')
+                                                        <form action="{{ route('authors.destroy', $author->id) }}" method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-link text-danger p-0" data-toggle="tooltip" data-placement="top" title="Author Delete">
-                                                                <i class="fa fa-trash"></i>
+                                                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline" data-toggle="tooltip" data-placement="top" title="Author Delete" onclick="return confirm('Are you sure?')">
+                                                                <i class="fa fa-trash text-danger"></i>
                                                             </button>
                                                         </form>
                                                     @endif
-                                                @else
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

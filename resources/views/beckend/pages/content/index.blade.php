@@ -59,46 +59,54 @@
                             <div class="card-title text-danger">Content Lists</div>
                         </div>
                         <div class="card-body">
-                            <table id="contentsTable" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>Category</th>
-                                        <th>Subcategory</th>
-                                        <th>Title</th>
-                                        <th>Image</th>
-                                        <th>Details</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($contents as $content)
+                            <div style="overflow-x:auto; width:100%;">
+                                <table id="contentsTable" class="table table-bordered table-striped">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $content->category->name ?? '' }}</td>
-                                            <td>{{ $content->subcategory->name ?? '' }}</td>
-                                            <td>{{ Str::limit($content->title, 20, '...') ?? '' }}</td>
-                                            <td>
-                                                <img class="content-image" src="{{ asset('/storage/assets/images/blogs/'.$content->image) }}" alt="">
-                                            </td>
-                                            <td>{{ Str::limit(strip_tags($content->details), 50, '...') }}</td>
-                                            <td>
-                                                <a class="" href="{{ route('contents.edit',$content->id) }}" data-toggle="tooltip" data-placement="top" title="Content Edit"><i class="fa fa-edit text-danger"></i></a>
-                                                <a class="px-3" href="{{ route('contents.show',$content->id) }}" data-toggle="tooltip" data-placement="top" title="Content Show"><i class="fa fa-eye text-danger"></i></a>
-                                                @if(Auth::user()->is_role !== 'editor')
-                                                    <form action="{{ route('contents.destroy', $content->id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline" data-toggle="tooltip" data-placement="top" title="Content Delete" onclick="return confirm('Are you sure?')">
-                                                            <i class="fa fa-trash text-danger"></i>
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                            </td>
+                                            <th>SL</th>
+                                            <th>Category</th>
+                                            <th>Subcategory</th>
+                                            <th>Title</th>
+                                            <th>Image</th>
+                                            <th>Details</th>
+                                            <th>Author</th>
+                                            <th>Visitor</th>
+                                            <th>Created</th>
+                                            <th class="text-center">ACTION</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($contents as $content)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $content->category->name ?? '' }}</td>
+                                                <td>{{ $content->subcategory->name ?? '' }}</td>
+                                                <td>{{ Str::limit($content->title, 15, '...') ?? '' }}</td>
+                                                <td>
+                                                    <img class="content-image" src="{{ asset('/storage/assets/images/blogs/'.$content->image) }}" alt="">
+                                                </td>
+                                                <td>{{ Str::limit(strip_tags($content->details), 20, '...') }}</td>
+                                                <td>{{ $content->author->name ?? '' }}</td>
+                                                <td>{{ $content->visitor_count ?? '' }}</td>
+                                                <td>{{ bangla_date($content->created_at) ?? '' }} (<small>{{ Carbon\Carbon::parse($content->created_at)->format('h:i A') }}</small>)</td>
+                                                <td class="d-flex justify-content-center">
+                                                    <a class="" href="{{ route('contents.edit',$content->id) }}" data-toggle="tooltip" data-placement="top" title="Content Edit"><i class="fa fa-edit text-danger"></i></a>
+                                                    <a class="px-3" href="{{ route('contents.show',$content->id) }}" data-toggle="tooltip" data-placement="top" title="Content Show"><i class="fa fa-eye text-danger"></i></a>
+                                                    @if(Auth::user()->is_role !== 'editor')
+                                                        <form action="{{ route('contents.destroy', $content->id) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline" data-toggle="tooltip" data-placement="top" title="Content Delete" onclick="return confirm('Are you sure?')">
+                                                                <i class="fa fa-trash text-danger"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -115,7 +123,7 @@
     <script>
         $(function() {
             $("#contentsTable").DataTable({
-                "responsive": true,
+                "responsive": false,
                 "lengthChange": true,
                 "autoWidth": true,
                 "pageLength": 25

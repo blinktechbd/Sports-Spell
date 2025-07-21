@@ -41,7 +41,7 @@
                                         <input type="text" name="name"
                                             class="form-control form-control-danger @error('name') is-invalid @enderror"
                                             placeholder="User Name" data-toggle="tooltip" data-placement="top"
-                                            title="User Name" />
+                                            title="User Name" value="{{ old('name') }}"/>
                                         @error('name')
                                             <div class="invalid-feedback d-block">
                                                 {{ $message }}
@@ -52,7 +52,7 @@
                                         <input type="email" name="email"
                                             class="form-control form-control-danger @error('email') is-invalid @enderror"
                                             placeholder="User Email" data-toggle="tooltip" data-placement="top"
-                                            title="User Email" />
+                                            title="User Email" value="{{ old('email') }}"/>
                                         @error('email')
                                             <div class="invalid-feedback d-block">
                                                 {{ $message }}
@@ -64,7 +64,7 @@
                                             <input type="password" name="password" id="password"
                                                 class="form-control form-control-danger @error('password') is-invalid @enderror"
                                                 placeholder="User Password" data-toggle="tooltip" data-placement="top"
-                                                title="User Password" />
+                                                title="User Password"/>
 
                                             <div class="input-group-append">
                                                 <span class="input-group-text bg-danger" id="togglePassword"
@@ -98,10 +98,10 @@
                                                 class="form-control select2 select2-danger @error('is_role') is-invalid @enderror"
                                                 data-dropdown-css-class="select2-danger" style="width: 100%;">
                                                 <option value="">User Type Select</option>
-                                                <option value="superadmin">Superadmin</option>
-                                                <option value="admin">Admin</option>
-                                                <option value="editor">Editor</option>
-                                                <option value="user">User</option>
+                                                <option value="superadmin" {{ old('is_role') == 'superadmin' ? 'selected' : '' }}>Superadmin</option>
+                                                <option value="admin" {{ old('is_role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                                                <option value="editor" {{ old('is_role') == 'editor' ? 'selected' : '' }}>Editor</option>
+                                                <option value="user" {{ old('is_role') == 'user' ? 'selected' : '' }}>User</option>
                                             </select>
                                             @error('is_role')
                                                 <div class="invalid-feedback d-block">

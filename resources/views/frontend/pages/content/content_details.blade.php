@@ -27,7 +27,7 @@
     <div class="container-fluid">
         <div class="container">
             <div class="header-bottom-ad">
-                <img src="{{ asset('/storage/assets/images/ads/header-bottom-ad.jpg') }}" alt="header-bottom-ad">
+                <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_special_header_top) }}" alt="header-bottom-ad">
             </div>
         </div>
     </div>
@@ -36,11 +36,11 @@
     <div class="container-fluid mt-4">
         <div class="container">
             <div class="row menu-listing">
-                <div class="col-lg-12 d-flex gap-2">
-                    <p class="text-danger">&#128973; <a
+                <div class="col-lg-12 d-flex gap-3">
+                    <p class="text-danger"><a
                                 href="{{ route('category-wise-content', $content->category->slug) }}"
                                 class="text-danger">{{ $content->category->name ?? '' }}</a></p>
-                    <p class="text-danger">&#128973; <a
+                    <p class="text-danger"><a
                                 href="{{ route('cat-wise-sub-content', [$content->category->slug, $content->subcategory->name]) }}"
                                 class="text-danger">{{ $content->subcategory->name ?? '' }}</a></p>
                 </div>
@@ -56,13 +56,16 @@
                     <div class="card border-0  special-left-content mb-5 ">
                         <img class="card-img-top" src="{{ asset('/storage/assets/images/blogs/' . $content->image) }}"
                             alt="{{ $content->slug }}">
+                        <div class="text-center" style="background:#eaecee">
+                            <small>{{ $content->caption ?? 'ছবি: সংগৃহীত' }}</small>
+                        </div>
                         <div class="row d-flex justify-content-center">
                             <div class="col-lg-10">
                                 <div class="card-body shadow-sm">
                                     <div class="row my-4 d-flex align-items-center">
                                         <div class="col-12 col-sm-6">
                                             <small class="text-muted">{{ bangla_date($content->created_at) }} |
-                                                অ্যাডমিন</small>
+                                                 {{ $content->author->name ?? ''}}</small>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="sharethis-inline-share-buttons z-0"></div>
@@ -85,7 +88,7 @@
                     <div class="container-fluid">
                         <div class="container">
                             <div class="header-bottom-ad">
-                                <img src="{{ asset('/storage/assets/images/ads/header-bottom-ad.jpg') }}"
+                                <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_special_header_bottom) }}"
                                     alt="header-bottom-ad">
                             </div>
                         </div>
@@ -149,7 +152,7 @@
 
                     {{-- special-content-right-ad --}}
                     <div class="special-content-right-ad my-5">
-                        <img src="{{ asset('/storage/assets/images/ads/special-content-right-top-ad.gif') }}"
+                        <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_sidebar_ad_one) }}"
                             alt="special-content-right-ad">
                     </div>
 
@@ -212,7 +215,7 @@
     <div class="container-fluid">
         <div class="container">
             <div class="header-bottom-ad">
-                <img src="{{ asset('/storage/assets/images/ads/header-bottom-ad.jpg') }}" alt="header-bottom-ad">
+                <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_special_header_bottom) }}" alt="header-bottom-ad">
             </div>
         </div>
     </div>
@@ -247,7 +250,7 @@
                                         alt="{{ $moreContent->slug }}">
                                     <div class="card-body">
                                         <small class="text-muted">{{ bangla_date($moreContent->created_at) }} |
-                                            অ্যাডমিন</small>
+                                             {{ $moreContent->author->name ?? ''}}</small>
 
                                         <h4 class="card-title my-2 text-danger">
                                             {{ Str::limit($moreContent->title, 40) }}

@@ -61,45 +61,34 @@
                             <div class="card-title text-danger">User Lists</div>
                         </div>
                         <div class="card-body">
-                            <table id="usersTable" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>NAME</th>
-                                        <th>EMAIL</th>
-                                        <th>IMAGE</th>
-                                        <th>ROLE</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($users as $user)
+                            <div style="overflow-x:auto; width:100%;">
+                                <table id="usersTable" class="table table-bordered table-striped">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $user->name ?? '' }}</td>
-                                            <td>{{ $user->email ?? '' }}</td>
-                                            <td>
-                                                <img class="content-image" src="{{ asset('/storage/assets/images/profile/' . ($user->image ?? 'profile.png')) }}" alt="profile-image">
-                                            </td>
-                                            <td><span class="badge badge-info">{{ Str::ucfirst($user->is_role ?? '') }}</span></td>
-                                            <td>
-                                                @if(Auth::check() && Auth::user()->is_role == 'superadmin')
+                                            <th>SL</th>
+                                            <th>NAME</th>
+                                            <th>EMAIL</th>
+                                            <th>IMAGE</th>
+                                            <th>ROLE</th>
+                                            <th class="text-center">ACTION</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($users as $user)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $user->name ?? '' }}</td>
+                                                <td>{{ $user->email ?? '' }}</td>
+                                                <td>
+                                                    <img class="content-image" src="{{ asset('/storage/assets/images/profile/' . ($user->image ?? 'profile.png')) }}" alt="profile-image">
+                                                </td>
+                                                <td><span class="badge badge-info">{{ Str::ucfirst($user->is_role ?? '') }}</span></td>
+                                                <td class="d-flex justify-content-center">
+                                                    @if(Auth::check() && Auth::user()->is_role == 'superadmin')
 
-                                                    <a href="{{ route('users.edit',$user->id) }}" data-toggle="tooltip" data-placement="top" title="User Edit"><i class="fa fa-edit text-danger"></i></a>
-                                                    <a class="px-3" href="{{ route('users.show',$user->id) }}" data-toggle="tooltip" data-placement="top" title="User Show"><i class="fa fa-eye text-danger"></i></a>
-
-                                                    <form action="{{ route('users.destroy', $user->id) }}" method="post" class="d-inline-block">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-link text-danger p-0" data-toggle="tooltip" data-placement="top" title="User Delete">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </form>
-
-                                                @elseif(Auth::user()->is_role == 'admin')
-                                                    @if($user->is_role == 'editor')
                                                         <a href="{{ route('users.edit',$user->id) }}" data-toggle="tooltip" data-placement="top" title="User Edit"><i class="fa fa-edit text-danger"></i></a>
                                                         <a class="px-3" href="{{ route('users.show',$user->id) }}" data-toggle="tooltip" data-placement="top" title="User Show"><i class="fa fa-eye text-danger"></i></a>
+
                                                         <form action="{{ route('users.destroy', $user->id) }}" method="post" class="d-inline-block">
                                                             @csrf
                                                             @method('DELETE')
@@ -107,14 +96,27 @@
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
                                                         </form>
+
+                                                    @elseif(Auth::user()->is_role == 'admin')
+                                                        @if($user->is_role == 'editor')
+                                                            <a href="{{ route('users.edit',$user->id) }}" data-toggle="tooltip" data-placement="top" title="User Edit"><i class="fa fa-edit text-danger"></i></a>
+                                                            <a class="px-3" href="{{ route('users.show',$user->id) }}" data-toggle="tooltip" data-placement="top" title="User Show"><i class="fa fa-eye text-danger"></i></a>
+                                                            <form action="{{ route('users.destroy', $user->id) }}" method="post" class="d-inline-block">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-link text-danger p-0" data-toggle="tooltip" data-placement="top" title="User Delete">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        @endif
+                                                    @else
                                                     @endif
-                                                @else
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

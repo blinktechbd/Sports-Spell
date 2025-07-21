@@ -9,6 +9,7 @@ use App\Models\Subcategory;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Author;
 
 class ContentController extends Controller
 {
@@ -21,7 +22,7 @@ class ContentController extends Controller
      */
     public function index()
     {
-        $contents = Content::with('category','subcategory')->orderBy('id','desc')->get();
+        $contents = Content::with('category','subcategory','author')->orderBy('id','desc')->get();
         return view('beckend.pages.content.index', compact('contents'));
     }
 
@@ -31,7 +32,8 @@ class ContentController extends Controller
     public function create()
     {
         $categories = Category::where(['status'=>'active'])->get();
-        return view('beckend.pages.content.create',compact('categories'));
+        $authors = Author::latest()->get();
+        return view('beckend.pages.content.create',compact('categories','authors'));
     }
 
     /**
@@ -42,8 +44,10 @@ class ContentController extends Controller
         $validated = $request->validate([
             'category_id' => 'required',
             'subcategory_id' => 'required',
+            'author_id' => 'required',
             'title' => 'required|unique:contents,title',
             'image' => 'required',
+            'caption' => 'nullable',
             'details' => 'required',
             'tags' => 'required',
         ]);
@@ -55,9 +59,11 @@ class ContentController extends Controller
         Content::create([
             'category_id' => $validated['category_id'],
             'subcategory_id' => $validated['subcategory_id'],
+            'author_id' => $validated['author_id'],
             'title' => $validated['title'],
             'slug' => str_replace(' ', '-', $validated['title']),
             'image' => $validated['image'],
+            'caption' => $validated['caption'],
             'details' => $validated['details'],
             'tags' => json_encode(explode(',', $validated['tags'])),
         ]);
@@ -71,7 +77,7 @@ class ContentController extends Controller
     {
         $categories = Category::where(['status'=>'active'])->get();
         $subcategories = Subcategory::get();
-        $content = Content::with('category','subcategory')->findOrFail($id);
+        $content = Content::with('category','subcategory','author')->findOrFail($id);
         return view('beckend.pages.content.show',compact('content','categories','subcategories'));
     }
 
@@ -82,8 +88,9 @@ class ContentController extends Controller
     {
         $categories = Category::where(['status'=>'active'])->get();
         $subcategories = Subcategory::get();
+        $authors = Author::latest()->get();
         $content = Content::with('category','subcategory')->findOrFail($id);
-        return view('beckend.pages.content.edit',compact('content','categories','subcategories'));
+        return view('beckend.pages.content.edit',compact('content','categories','subcategories','authors'));
     }
 
     /**
@@ -95,8 +102,10 @@ class ContentController extends Controller
         $validated = $request->validate([
             'category_id' => 'required',
             'subcategory_id' => 'required',
+            'author_id' => 'required',
             'title' => 'required|unique:contents,title,' . $content->id,
-            'image' => 'required',
+            'image' => 'nullable',
+            'caption' => 'nullable',
             'details' => 'required',
             'tags' => 'required',
         ]);
@@ -109,9 +118,11 @@ class ContentController extends Controller
         $content->update([
             'category_id' => $validated['category_id'],
             'subcategory_id' => $validated['subcategory_id'],
+            'author_id' => $validated['author_id'],
             'title' => $validated['title'],
             'slug' => str_replace(' ', '-', $validated['title']),
-            'image' => $validated['image'],
+            'image' => !empty($validated['image']) ? $validated['image'] : $content->image,
+            'caption' => $validated['caption'],
             'details' => $validated['details'],
             'tags' => json_encode(explode(',', $validated['tags'])),
         ]);

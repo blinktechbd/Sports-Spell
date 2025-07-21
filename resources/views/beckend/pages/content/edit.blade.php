@@ -41,6 +41,7 @@
             padding: 0.2em 0.5em;
             border-radius: 3px;
         }
+
     </style>
 @endpush
 @section('admin-content')
@@ -108,6 +109,24 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="col-12 mb-2">
+                                        <div class="form-group" data-toggle="tooltip" data-placement="top"
+                                            title="Select Author">
+                                            <select name="author_id" id="author"
+                                                class="form-control select2 select2-danger @error('author_id') is-invalid @enderror"
+                                                data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                                <option value="">Author Select</option>
+                                                @foreach ($authors as $author)
+                                                    <option value="{{ $author->id }}" @if($author->id == $content->author_id) selected @endif>{{ $author->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('author_id')
+                                                <div class="invalid-feedback d-block">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     <div class="col-12 mb-3">
                                         <input type="text" name="title"
                                             class="form-control form-control-danger @error('title') is-invalid @enderror"
@@ -134,6 +153,17 @@
                                                 </div>
                                             @enderror
                                         </div>
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <input type="text" name="caption"
+                                            class="form-control form-control-danger @error('caption') is-invalid @enderror"
+                                            placeholder="Image Caption" data-toggle="tooltip" data-placement="top"
+                                            title="Image Caption" value="{{ $content->caption ?? '' }}" />
+                                        @error('caption')
+                                            <div class="invalid-feedback d-block">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                     <div class="col-12 mb-2">
                                         <div class="form-group" data-toggle="tooltip" data-placement="top" title="Content Details">
@@ -182,12 +212,12 @@
                 height: 250,
                 toolbar: [
                     ['style', ['style']],
-                    ['font', ['bold', 'italic', 'underline', 'clear', 'fontsize']],
+                    ['font', ['bold', 'italic', 'underline', 'clear', 'fontsize','color']],
                     ['para', ['ul', 'ol', 'paragraph']],
                     ['insert', ['link', 'picture', 'video']],
                     ['view', ['fullscreen', 'codeview', 'help']]
                 ],
-                fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '18', '20','22','24']
+                fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '18', '20','22','24'],
             });
             $('#category').on('change', function() {
                 var categoryID = $(this).val();

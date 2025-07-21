@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\AdMangement;
 use App\Models\Content;
 use App\Models\Setting;
 use App\Models\Category;
@@ -37,4 +38,7 @@ function trdng_post(){
 }
 function galleryLtstPost($id){
     return Gallery::where('id', '!=', $id)->orderBy('id','desc')->limit(6)->get();
+}
+function ad_management(){
+    return AdMangement::first();
 }

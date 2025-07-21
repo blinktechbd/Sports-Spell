@@ -41,7 +41,7 @@
                                         <input type="text" name="title"
                                             class="form-control form-control-danger @error('title') is-invalid @enderror"
                                             placeholder="Gallery Title" data-toggle="tooltip" data-placement="top"
-                                            title="Gallery Title" />
+                                            title="Gallery Title" value="{{ old('title') }}"/>
                                         @error('title')
                                             <div class="invalid-feedback d-block">
                                                 {{ $message }}

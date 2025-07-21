@@ -57,37 +57,39 @@
                             <div class="card-title text-danger">Subcategory Lists</div>
                         </div>
                         <div class="card-body">
-                            <table id="subCategoriesTable" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>Category</th>
-                                        <th>NAME</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($subcategories as $subcategory)
+                            <div style="overflow-x:auto; width:100%;">
+                                <table id="subCategoriesTable" class="table table-bordered table-striped">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $subcategory->category->name ?? '' }}</td>
-                                            <td> {{ $subcategory->name ?? '' }}</td>
-                                            <td>
-                                                <a class="" href="{{ route('subcategories.edit',$subcategory->id) }}" data-toggle="tooltip" data-placement="top" title="Subcategory Edit"><i class="fa fa-edit text-danger"></i></a>
-                                                @if(Auth::user()->is_role !== 'editor')
-                                                    <form action="{{ route('subcategories.destroy', $subcategory->id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-link px-3 p-0 m-0 align-baseline" data-toggle="tooltip" data-placement="top" title="Subcategory Delete" onclick="return confirm('Are you sure?')">
-                                                            <i class="fa fa-trash text-danger"></i>
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                            </td>
+                                            <th>SL</th>
+                                            <th>Category</th>
+                                            <th>NAME</th>
+                                            <th class="text-center">ACTION</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($subcategories as $subcategory)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $subcategory->category->name ?? '' }}</td>
+                                                <td> {{ $subcategory->name ?? '' }}</td>
+                                                <td class="d-flex justify-content-center">
+                                                    <a class="" href="{{ route('subcategories.edit',$subcategory->id) }}" data-toggle="tooltip" data-placement="top" title="Subcategory Edit"><i class="fa fa-edit text-danger"></i></a>
+                                                    @if(Auth::user()->is_role !== 'editor')
+                                                        <form action="{{ route('subcategories.destroy', $subcategory->id) }}" method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-link px-3 p-0 m-0 align-baseline" data-toggle="tooltip" data-placement="top" title="Subcategory Delete" onclick="return confirm('Are you sure?')">
+                                                                <i class="fa fa-trash text-danger"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -113,7 +113,7 @@
     <div class="container-fluid">
         <div class="container">
             <div class="header-bottom-ad">
-                <img src="{{ asset('/storage/assets/images/ads/header-bottom-ad.jpg') }}" alt="header-bottom-ad">
+                <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_special_header_top) }}" alt="header-bottom-ad">
             </div>
         </div>
     </div>
@@ -123,7 +123,7 @@
         <div class="container">
             <div class="row menu-listing">
                 <div class="col-lg-12">
-                    <h4 class="text-danger text-center">&#128973; অনুসন্ধান ফলাফল: "{{ $searchTerm ?? '' }}"</h4>
+                    <h4 class="text-danger text-center">অনুসন্ধান ফলাফল: "{{ $searchTerm ?? '' }}"</h4>
                 </div>
             </div>
         </div>
@@ -143,17 +143,17 @@
                                     class="text-decoration-none">
                                     <div class="card border-0 shadow-sm special-left-content">
                                         <img class="card-img-top"
-                                            src="{{ asset('storage/assets/images/blogs/' . $contents[0]->image) }}"
+                                            src="{{ asset('storage/assets/images/blogs/' . $contents[0]['image']) }}"
                                             alt="image-1">
                                         <div class="card-body">
                                             <small
                                                 class="text-muted">{{ bangla_date($contents[0]['created_at']) }} |
-                                                    অ্যাডমিন</small>
+                                                     {{ $contents[0]['author']['name'] ?? ''}}</small>
                                             <h4 class="card-title my-2 text-danger">
-                                                {{ Str::limit($contents[0]->title, 40) }}
+                                                {{ Str::limit($contents[0]['title'], 40) }}
                                             </h4>
                                             <p class="card-text text-muted">
-                                                {{ Str::limit(strip_tags(html_entity_decode($contents[0]->details)), 400) }}
+                                                {{ Str::limit(strip_tags(html_entity_decode($contents[0]['details'])), 400) }}
                                             </p>
                                         </div>
                                     </div>
@@ -172,7 +172,7 @@
                                         <div class="card-body px-2">
                                             <small
                                                 class="text-muted">{{ bangla_date($content->created_at) }} |
-                                                    অ্যাডমিন</small>
+                                                     {{ $content->author->name ?? ''}}</small>
                                             <h5 class="card-title my-2 text-danger">
                                                 {{ Str::limit($content->title, 25) }}
                                             </h5>
@@ -196,7 +196,7 @@
                                         <div class="card-body px-2">
                                             <small
                                                 class="text-muted">{{ bangla_date($content->created_at) }} |
-                                                    অ্যাডমিন</small>
+                                                     {{ $content->author->name ?? ''}}</small>
                                             <h5 class="card-title my-2 text-danger">
                                                 {{ Str::limit($content->title, 25) }}
                                             </h5>

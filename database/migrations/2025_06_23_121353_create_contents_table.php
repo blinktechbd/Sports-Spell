@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('subcategory_id');
+            $table->unsignedBigInteger('author_id');
             $table->string('title')->unique();
             $table->text('slug');
             $table->string('image');
+            $table->string('caption')->nullable();
             $table->longText('details');
             $table->text('tags')->comment('array format');
             $table->bigInteger('visitor_count')->default(0);
@@ -25,6 +27,7 @@ return new class extends Migration
 
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('subcategory_id')->references('id')->on('subcategories')->onDelete('cascade');
+            $table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade');
         });
     }
 
