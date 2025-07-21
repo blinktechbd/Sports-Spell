@@ -21,7 +21,16 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'image',
+        'pin',
+        'is_role',
     ];
+
+    public function comments(){
+        return $this->hasMany(Comment::class,'user_id')->with('content');
+    }
+
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -29,7 +38,6 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 
