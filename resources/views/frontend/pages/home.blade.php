@@ -349,10 +349,10 @@
                                         <div class="top"></div>
                                         <div class="bottom"></div>
                                         <div class="category">
-                                            <h6 class=""><a
+                                            <h5 class=""><a
                                                     href="{{ route('category-wise-content', $topCat->slug) }}"
                                                     class="text-decoration-none text-danger">{{ $topCat->name ?? '' }}</a>
-                                            </h6>
+                                            </h5>
                                         </div>
                                     </div>
                                     <div class="tab d-flex gap-3">

@@ -140,4 +140,17 @@ class ContentController extends Controller
         $content->delete();
         return redirect()->back()->with('message', 'Content deleted successfully.');
     }
+
+    public function uploadImage(Request $request)
+    {
+        $image = $request->file('file');
+
+        $filename = 'image_'.time().'_'.$image->hashName();
+        $image = $image->move(public_path('storage/assets/images/blogs'), $filename);
+
+        return json_encode(array(
+        'file_path' => url('storage/assets/images/blogs/'.$filename)
+       ));
+
+    }
 }

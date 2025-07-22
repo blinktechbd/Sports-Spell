@@ -5,7 +5,7 @@
 @push('adminAppendCss')
     <link rel="stylesheet" href="{{ asset('/storage/admin/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/storage/admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/storage/admin/plugins/summernote/summernote-bs4.min.css') }}">
+    <link href="{{ asset('/storage/admin/tinymce/skins/lightgray/skin.min.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
     <style>
         input.form-control-danger:focus {
@@ -34,6 +34,7 @@
             border-radius: 0.25rem;
             background-color: #fff;
         }
+
         .bootstrap-tagsinput .tag {
             margin-right: 2px;
             color: white;
@@ -41,7 +42,6 @@
             padding: 0.2em 0.5em;
             border-radius: 3px;
         }
-
     </style>
 @endpush
 @section('admin-content')
@@ -63,7 +63,7 @@
         <div class="container-fluid">
             <div class="row g-4">
                 <div class="col-lg-12">
-                    <form action="{{ route('contents.update',$content->id) }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('contents.update', $content->id) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('put')
                         <div class="card card-danger card-outline mb-4">
@@ -80,7 +80,9 @@
                                                 data-dropdown-css-class="select2-danger" style="width: 100%;">
                                                 <option value="">Category Select</option>
                                                 @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}" @if($category->id == $content->category_id) selected @endif>{{ $category->name }}</option>
+                                                    <option value="{{ $category->id }}"
+                                                        @if ($category->id == $content->category_id) selected @endif>
+                                                        {{ $category->name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('category_id')
@@ -99,7 +101,9 @@
                                                 data-dropdown-css-class="select2-danger" style="width: 100%;">
                                                 <option value="">Select Subcategory</option>
                                                 @foreach ($subcategories as $subcategory)
-                                                    <option value="{{ $subcategory->id }}" @if($subcategory->id == $content->subcategory_id) selected @endif>{{ $subcategory->name }}</option>
+                                                    <option value="{{ $subcategory->id }}"
+                                                        @if ($subcategory->id == $content->subcategory_id) selected @endif>
+                                                        {{ $subcategory->name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('subcategory_id')
@@ -117,7 +121,9 @@
                                                 data-dropdown-css-class="select2-danger" style="width: 100%;">
                                                 <option value="">Author Select</option>
                                                 @foreach ($authors as $author)
-                                                    <option value="{{ $author->id }}" @if($author->id == $content->author_id) selected @endif>{{ $author->name }}</option>
+                                                    <option value="{{ $author->id }}"
+                                                        @if ($author->id == $content->author_id) selected @endif>
+                                                        {{ $author->name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('author_id')
@@ -131,7 +137,7 @@
                                         <input type="text" name="title"
                                             class="form-control form-control-danger @error('title') is-invalid @enderror"
                                             placeholder="Content Title" data-toggle="tooltip" data-placement="top"
-                                            title="Content Title" value="{{ $content->title }}"/>
+                                            title="Content Title" value="{{ $content->title }}" />
                                         @error('title')
                                             <div class="invalid-feedback d-block">
                                                 {{ $message }}
@@ -141,10 +147,15 @@
                                     <div class="col-12 mb-2">
                                         <div class="form-group">
                                             <div>
-                                                <img class="w-25" src="{{ asset('/storage/assets/images/blogs/'.$content->image) }}" alt="content-image">
+                                                <img class="w-25"
+                                                    src="{{ asset('/storage/assets/images/blogs/' . $content->image) }}"
+                                                    alt="content-image">
                                             </div>
                                             <div class="custom-file">
-                                                <input type="file" name="image" class="form-control form-control-danger custom-file-input" id="customFile" data-toggle="tooltip" data-placement="top" title="Content Image">
+                                                <input type="file" name="image"
+                                                    class="form-control form-control-danger custom-file-input"
+                                                    id="customFile" data-toggle="tooltip" data-placement="top"
+                                                    title="Content Image">
                                                 <label class="custom-file-label" for="customFile">Choose file</label>
                                             </div>
                                             @error('image')
@@ -166,8 +177,9 @@
                                         @enderror
                                     </div>
                                     <div class="col-12 mb-2">
-                                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="Content Details">
-                                            <textarea name="details" class="form-control" id="summernote" placeholder="Content Details">
+                                        <div class="form-group" data-toggle="tooltip" data-placement="top"
+                                            title="Content Details">
+                                            <textarea name="details" class="form-control" id="post_content" placeholder="Content Details">
                                                 {{ $content->details }}
                                             </textarea>
                                             @error('details')
@@ -178,8 +190,11 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <div class="form-group" data-toggle="tooltip" data-placement="top" title="Content input tags">
-                                            <input type="text" id="tags" name="tags" class="form-control" data-role="tagsinput" placeholder="Enter content input tags" value="{{ implode(',', json_decode($content->tags, true)) }}">
+                                        <div class="form-group" data-toggle="tooltip" data-placement="top"
+                                            title="Content input tags">
+                                            <input type="text" id="tags" name="tags" class="form-control"
+                                                data-role="tagsinput" placeholder="Enter content input tags"
+                                                value="{{ implode(',', json_decode($content->tags, true)) }}">
                                             @error('tags')
                                                 <div class="invalid-feedback d-block">
                                                     {{ $message }}
@@ -201,23 +216,154 @@
 @endsection
 @push('adminAppendScripts')
     <script src="{{ asset('/storage/admin/plugins/select2/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('/storage/admin/plugins/summernote/summernote-bs4.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@5.10.0/tinymce.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
     <script src="{{ asset('/storage/admin/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <script>
         $(document).ready(function() {
             $('.select2').select2();
             bsCustomFileInput.init();
-            $('#summernote').summernote({
-                height: 250,
-                toolbar: [
-                    ['style', ['style']],
-                    ['font', ['bold', 'italic', 'underline', 'clear', 'fontsize','color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['insert', ['link', 'picture', 'video']],
-                    ['view', ['fullscreen', 'codeview', 'help']]
+            //TinyMCE
+            tinymce.init({
+                selector: "textarea#post_content",
+                contextmenu: false,
+                height: 400,
+                convert_urls: false,
+                plugins: [
+                    'advlist autolink lists link charmap print preview hr anchor pagebreak',
+                    'searchreplace wordcount visualblocks visualchars code fullscreen',
+                    'insertdatetime media nonbreaking save table directionality',
+                    'emoticons template paste textcolor colorpicker textpattern imagetools'
                 ],
-                fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '18', '20','22','24'],
+                toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link insertCustomImage',
+                toolbar2: 'print preview media | forecolor backcolor emoticons',
+                setup: function(editor) {
+                    editor.ui.registry.addButton('insertCustomImage', {
+                        text: '',
+                        icon: 'image',
+                        onAction: function() {
+                            let fileInputId = 'custom-upload-' + Date.now();
+                            editor.windowManager.open({
+                                title: 'Upload Image with Caption',
+                                body: {
+                                    type: 'panel',
+                                    items: [{
+                                            type: 'htmlpanel',
+                                            html: `
+                  <label for="${fileInputId}" style="display:block;margin-bottom:8px;font-weight:bold;">Choose Image:</label>
+                  <input type="file" id="${fileInputId}" accept="image/*" style="margin-bottom:15px;" />
+                `
+                                        },
+                                        {
+                                            type: 'checkbox',
+                                            name: 'caption',
+                                            label: 'Add Caption',
+                                        }
+                                    ]
+                                },
+                                initialData: {
+                                    caption: true
+                                },
+                                buttons: [{
+                                        type: 'cancel',
+                                        text: 'Cancel'
+                                    },
+                                    {
+                                        type: 'submit',
+                                        text: 'Upload & Insert',
+                                        primary: true,
+                                        classes: 'tox-insert-btn'
+                                    }
+                                ],
+                                onSubmit: function(api) {
+                                    const data = api.getData();
+                                    const fileInput = document.getElementById(
+                                        fileInputId);
+                                    const file = fileInput.files[0];
+
+                                    if (!file) {
+                                        editor.windowManager.alert(
+                                            'Please select an image file.');
+                                        return;
+                                    }
+
+                                    const buttons = document.querySelectorAll(
+                                        '.tox-dialog__footer .tox-button');
+                                    let submitButton = null;
+                                    buttons.forEach(btn => {
+                                        if (btn.textContent.trim() ===
+                                            'Upload & Insert') {
+                                            submitButton = btn;
+                                        }
+                                    });
+                                    const originalText = submitButton ?
+                                        submitButton
+                                        .innerText : 'Upload & Insert';
+                                    if (submitButton) {
+                                        submitButton.disabled = true;
+                                        submitButton.innerText = 'Uploading...';
+                                    }
+
+                                    const formData = new FormData();
+                                    formData.append('_token',
+                                        '{{ csrf_token() }}');
+                                    formData.append('file', file);
+
+                                    const xhr = new XMLHttpRequest();
+                                    xhr.open('POST',
+                                        '{{ route('postImageUpload') }}',
+                                        true);
+                                    xhr.onload = function() {
+
+                                        if (submitButton) {
+                                            submitButton.disabled = false;
+                                            submitButton.innerText =
+                                                originalText;
+                                        }
+
+                                        if (xhr.status !== 200) {
+                                            editor.windowManager.alert(
+                                                'Upload failed.');
+                                            return;
+                                        }
+
+                                        const res = JSON.parse(xhr
+                                            .responseText);
+                                        if (!res.file_path) {
+                                            editor.windowManager.alert(
+                                                'Invalid response from server.'
+                                            );
+                                            return;
+                                        }
+
+                                        const html = data.caption ?
+                                            `<figure class="image w-100">
+                                                <img class="w-100" src="${res.file_path}" alt="${file.name}" />
+                                                <figcaption class="text-center"  style="background:#eaecee">Write caption here...</figcaption>
+                                            </figure>`:
+                                            `<figure class="image w-100" ><img class="w-100" src="${res.file_path}" alt="${file.name}"/></figure>`;
+
+                                        editor.insertContent(html);
+                                        api.close();
+                                    };
+
+                                    xhr.onerror = function() {
+                                        if (submitButton) {
+                                            submitButton.disabled = false;
+                                            submitButton.innerText =
+                                                originalText;
+                                        }
+                                        editor.windowManager.alert(
+                                            'An error occurred while uploading.'
+                                        );
+                                    };
+
+                                    xhr.send(formData);
+                                }
+                            });
+                        }
+                    });
+                }
             });
             $('#category').on('change', function() {
                 var categoryID = $(this).val();
@@ -227,9 +373,11 @@
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
-                            $('#subcategory').empty().append('<option value="">Select Subcategory</option>');
+                            $('#subcategory').empty().append(
+                                '<option value="">Select Subcategory</option>');
                             $.each(data, function(key, value) {
-                                $('#subcategory').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                                $('#subcategory').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
                             });
                         },
                         error: function() {
