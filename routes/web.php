@@ -43,6 +43,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::match(['get','post'],'/profile-settings',[SettingController::class, 'profile_settings'])->name('profile.settings');
     Route::get('/admin-logout',[AuthController::class,'adminLogout'])->name('admin.logout');
     // ajax call
+    Route::post('/image-upload', [ContentController::class,'uploadImage'])->name('postImageUpload');
     Route::get('/get-subcategories/{category_id}', [SubcategoryController::class, 'getSubcategories']);
 });
 

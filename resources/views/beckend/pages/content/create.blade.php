@@ -5,7 +5,7 @@
 @push('adminAppendCss')
     <link rel="stylesheet" href="{{ asset('/storage/admin/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/storage/admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/storage/admin/plugins/summernote/summernote-bs4.min.css') }}">
+    <link href="{{ asset('/storage/admin/tinymce/skins/lightgray/skin.min.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
     <style>
         input.form-control-danger:focus {
@@ -132,9 +132,8 @@
                                     <div class="col-12 mb-3">
                                         <input type="text" name="title"
                                             class="form-control form-control-danger @error('title') is-invalid @enderror"
-                                            placeholder="Content Title" value="{{ old('title') }}"
-                                            data-toggle="tooltip" data-placement="top"
-                                            title="Content Title" />
+                                            placeholder="Content Title" value="{{ old('title') }}" data-toggle="tooltip"
+                                            data-placement="top" title="Content Title" />
                                         @error('title')
                                             <div class="invalid-feedback d-block">
                                                 {{ $message }}
@@ -160,9 +159,8 @@
                                     <div class="col-12 mb-3">
                                         <input type="text" name="caption"
                                             class="form-control form-control-danger @error('caption') is-invalid @enderror"
-                                            placeholder="Image Caption" value="{{ old('caption') }}"
-                                            data-toggle="tooltip" data-placement="top"
-                                            title="Image Caption" />
+                                            placeholder="Image Caption" value="{{ old('caption') }}" data-toggle="tooltip"
+                                            data-placement="top" title="Image Caption" />
                                         @error('caption')
                                             <div class="invalid-feedback d-block">
                                                 {{ $message }}
@@ -172,8 +170,7 @@
                                     <div class="col-12 mb-2">
                                         <div class="form-group" data-toggle="tooltip" data-placement="top"
                                             title="Content Details">
-                                            <textarea name="details" class="form-control" id="summernote"
-                                                placeholder="Content Details">{{ old('details') }}</textarea>
+                                            <textarea name="details" class="form-control" id="post_content" placeholder="Content Details">{{ old('details') }}</textarea>
                                             @error('details')
                                                 <div class="invalid-feedback d-block">
                                                     {{ $message }}
@@ -209,7 +206,7 @@
 
 @push('adminAppendScripts')
     <script src="{{ asset('/storage/admin/plugins/select2/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('/storage/admin/plugins/summernote/summernote-bs4.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@5.10.0/tinymce.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
     <script src="{{ asset('/storage/admin/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
 
@@ -223,16 +220,148 @@
         $(document).ready(function() {
             $('.select2').select2();
             bsCustomFileInput.init();
-            $('#summernote').summernote({
-                height: 250,
-                toolbar: [
-                    ['style', ['style']],
-                    ['font', ['bold', 'italic', 'underline', 'clear', 'fontsize', 'color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['insert', ['link', 'picture', 'video']],
-                    ['view', ['fullscreen', 'codeview', 'help']],
+
+            //TinyMCE
+            tinymce.init({
+                selector: "textarea#post_content",
+                contextmenu: false,
+                height: 400,
+                convert_urls: false,
+                plugins: [
+                    'advlist autolink lists link charmap print preview hr anchor pagebreak',
+                    'searchreplace wordcount visualblocks visualchars code fullscreen',
+                    'insertdatetime media nonbreaking save table directionality',
+                    'emoticons template paste textcolor colorpicker textpattern imagetools'
                 ],
-                fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '18', '20', '22', '24'],
+                toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link insertCustomImage',
+                toolbar2: 'print preview media | forecolor backcolor emoticons',
+                setup: function(editor) {
+                    editor.ui.registry.addButton('insertCustomImage', {
+                        text: '',
+                        icon: 'image',
+                        onAction: function() {
+                            let fileInputId = 'custom-upload-' + Date.now();
+                            editor.windowManager.open({
+                                title: 'Upload Image with Caption',
+                                body: {
+                                    type: 'panel',
+                                    items: [{
+                                            type: 'htmlpanel',
+                                            html: `
+                  <label for="${fileInputId}" style="display:block;margin-bottom:8px;font-weight:bold;">Choose Image:</label>
+                  <input type="file" id="${fileInputId}" accept="image/*" style="margin-bottom:15px;" />
+                `
+                                        },
+                                        {
+                                            type: 'checkbox',
+                                            name: 'caption',
+                                            label: 'Add Caption',
+                                        }
+                                    ]
+                                },
+                                initialData: {
+                                    caption: true
+                                },
+                                buttons: [{
+                                        type: 'cancel',
+                                        text: 'Cancel'
+                                    },
+                                    {
+                                        type: 'submit',
+                                        text: 'Upload & Insert',
+                                        primary: true,
+                                        classes: 'tox-insert-btn'
+                                    }
+                                ],
+                                onSubmit: function(api) {
+                                    const data = api.getData();
+                                    const fileInput = document.getElementById(
+                                        fileInputId);
+                                    const file = fileInput.files[0];
+
+                                    if (!file) {
+                                        editor.windowManager.alert(
+                                            'Please select an image file.');
+                                        return;
+                                    }
+
+                                    const buttons = document.querySelectorAll(
+                                        '.tox-dialog__footer .tox-button');
+                                    let submitButton = null;
+                                    buttons.forEach(btn => {
+                                        if (btn.textContent.trim() ===
+                                            'Upload & Insert') {
+                                            submitButton = btn;
+                                        }
+                                    });
+                                    const originalText = submitButton ?
+                                        submitButton
+                                        .innerText : 'Upload & Insert';
+                                    if (submitButton) {
+                                        submitButton.disabled = true;
+                                        submitButton.innerText = 'Uploading...';
+                                    }
+
+                                    const formData = new FormData();
+                                    formData.append('_token',
+                                        '{{ csrf_token() }}');
+                                    formData.append('file', file);
+
+                                    const xhr = new XMLHttpRequest();
+                                    xhr.open('POST',
+                                        '{{ route('postImageUpload') }}',
+                                        true);
+                                    xhr.onload = function() {
+
+                                        if (submitButton) {
+                                            submitButton.disabled = false;
+                                            submitButton.innerText =
+                                                originalText;
+                                        }
+
+                                        if (xhr.status !== 200) {
+                                            editor.windowManager.alert(
+                                                'Upload failed.');
+                                            return;
+                                        }
+
+                                        const res = JSON.parse(xhr
+                                            .responseText);
+                                        if (!res.file_path) {
+                                            editor.windowManager.alert(
+                                                'Invalid response from server.'
+                                                );
+                                            return;
+                                        }
+
+                                        const html = data.caption ?
+                                            `<figure class="image w-100" contenteditable="false">
+                     <img class="w-100" src="${res.file_path}" alt="${file.name}" />
+                     <figcaption class="text-center" contenteditable="true" style="background:#eaecee;">Write caption here...</figcaption>
+                   </figure>` :
+                                            `<figure class="image w-100" contenteditable="false"><img class="w-100" src="${res.file_path}" alt="${file.name}"/></figure>`;
+
+                                        editor.insertContent(html);
+                                        api.close();
+                                    };
+
+                                    xhr.onerror = function() {
+                                        if (submitButton) {
+                                            submitButton.disabled = false;
+                                            submitButton.innerText =
+                                                originalText;
+                                        }
+                                        editor.windowManager.alert(
+                                            'An error occurred while uploading.'
+                                            );
+                                    };
+
+                                    xhr.send(formData);
+                                }
+                            });
+                        }
+                    });
+                }
             });
 
             function loadSubcategories(categoryID, selectedSubcategoryID = null) {
@@ -242,10 +371,13 @@
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
-                            $('#subcategory').empty().append('<option value="">Select Subcategory</option>');
+                            $('#subcategory').empty().append(
+                                '<option value="">Select Subcategory</option>');
                             $.each(data, function(key, value) {
-                                let selected = (selectedSubcategoryID == value.id) ? 'selected' : '';
-                                $('#subcategory').append('<option value="' + value.id + '" ' + selected + '>' + value.name + '</option>');
+                                let selected = (selectedSubcategoryID == value.id) ?
+                                    'selected' : '';
+                                $('#subcategory').append('<option value="' + value.id + '" ' +
+                                    selected + '>' + value.name + '</option>');
                             });
                             $('#subcategory').val(selectedSubcategoryID).trigger('change');
                         },
