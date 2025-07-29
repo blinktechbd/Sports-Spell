@@ -10,7 +10,9 @@ use App\Models\Category;
 use App\Models\TodaySport;
 use App\Services\Services;
 use App\Models\Subcategory;
+use Spatie\Sitemap\Sitemap;
 use Illuminate\Http\Request;
+use Spatie\Sitemap\Tags\Url;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -26,7 +28,7 @@ class HomeController extends Controller
         $specialCat = "";
         $specialCat = Category::where(['status'=>'active','type'=>'special','sort_order'=>1])->select('id','name','slug','status','sort_order','type')->first();
         if($specialCat){
-            $specialConts = Content::with('author')->where(['category_id'=>$specialCat->id])->get() ?? [];
+            $specialConts = Content::with('author')->where(['category_id'=>$specialCat->id])->limit(5)->get() ?? [];
         }
         $contents = Content::with('category:id,name,slug','subcategory:id,category_id,name','author:id,name')->latest()->take(6)->select('id','category_id','subcategory_id','author_id','title','slug','image','details','created_at')->get();
         $categoriesContents = Category::with(['subcategories','contents' => function($query) {
@@ -122,6 +124,9 @@ class HomeController extends Controller
     public function privacy_policy(){
         return view('frontend.pages.privacy_policy');
     }
+    public function terms_policy(){
+        return view('frontend.pages.terms_policy');
+    }
     public function comment(Request $request){
         $validated = $request->validate([
             'comment' => 'required',
@@ -159,5 +164,48 @@ class HomeController extends Controller
             return redirect()->back()->with('message', 'Updated successfully.');
         }
         return view('auth.user_profile',compact('user'));
+    }
+    public function site_map(){
+        $sitemap = Sitemap::create();
+        $sitemap->add(Url::create(url('/'))->setPriority(1.0));
+        $sitemap->add(Url::create(route('about'))->setPriority(0.7));
+        $sitemap->add(Url::create(route('contact'))->setPriority(0.7));
+        $sitemap->add(Url::create(route('privacyPolicy'))->setPriority(0.6));
+        $sitemap->add(Url::create(route('termsPolicy'))->setPriority(0.6));
+        Category::where('status', 'active')->get()->each(function ($category) use ($sitemap) {
+            $sitemap->add(
+                Url::create(url($category->slug))
+                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                    ->setPriority(0.9)
+            );
+        });
+        Subcategory::with('category')
+            ->whereRelation('category', 'status', 'active')
+            ->get()
+            ->each(function ($subcategory) use ($sitemap) {
+                if ($subcategory->category) {
+                    $sitemap->add(
+                        Url::create(url("{$subcategory->category->slug}/{$subcategory->name}"))
+                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                            ->setPriority(0.85)
+                    );
+                }
+            });
+        Content::with(['category', 'subcategory'])
+            ->whereRelation('category', 'status', 'active')
+            ->chunk(500, function ($contents) use ($sitemap) {
+                foreach ($contents as $content) {
+                    if ($content->category && $content->subcategory) {
+                        $url = url("{$content->category->slug}/{$content->subcategory->name}/{$content->slug}");
+                        $sitemap->add(
+                            Url::create($url)
+                                ->setLastModificationDate($content->updated_at)
+                                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                                ->setPriority(0.8)
+                        );
+                    }
+                }
+            });
+        return $sitemap->toResponse(request());
     }
 }

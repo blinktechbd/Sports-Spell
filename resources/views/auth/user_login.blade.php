@@ -38,11 +38,11 @@
     <div class="container-fluid">
         <div class="container">
             <div class="login-box row d-flex justify-content-center">
-                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-8 col-md-6 col-lg-4">
                     <div class="card border-1 border-danger">
                         <div class="card-body login-card-body">
-                            <div class="text-center mb-5">
-                                <img class="" src="{{ asset('/storage/assets/images/logo/logo.png') }}" alt="Sports Spell">
+                            <div class="text-center mb-2">
+                                {{-- <img class="" src="{{ asset('/storage/assets/images/logo/logo.png') }}" alt="Sports Spell"> --}}
                                 <h5 class="fw-bold my-3 text-danger">লগইন করুন</h5>
                             </div>
                             <form action="" method="post">
@@ -72,6 +72,12 @@
                                         <div class="d-grid gap-2">
                                             <button type="submit" class="btn btn-sm btn-danger w-100">লগইন</button>
                                         </div>
+                                        <a href="{{ url('/auth/google') }}" class="btn btn-sm btn-info text-white w-100 mt-2" >
+                                            <i class="fab fa-google"></i> গুগল দিয়ে লগইন করুন
+                                        </a>
+                                        <a href="{{ url('/auth/facebook') }}" class="btn btn-sm btn-primary w-100 mt-2">
+                                            <i class="fab fa-facebook"></i> ফেসবুক দিয়ে লগইন করুন
+                                        </a>
                                     </div>
                                     <!-- OR Divider -->
                                     <div class="col-12 my-1">

@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="{{ route('dashboard') }}" class="brand-link elevation-4 d-flex justify-content-center">
-        <img src="{{ asset('/storage/assets/images/logo/logo.png') }}" alt="AdminLTE Logo"
-            class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="{{ asset('/storage/assets/images/logo/'.getSetting()->logo) }}" alt="AdminLTE Logo"
+            class="brand-image brand-image bg-white px-2 img-circle elevation-3" style="opacity: .8">
     </a>
 
     <div class="sidebar">
@@ -216,6 +216,23 @@
                                 <a href="{{ route('admanagements') }}" class="nav-link {{ request()->routeIs('admanagements') ? 'active' : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Ad Manage</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item {{ request()->routeIs('authenticators.index') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->routeIs('authenticators.index') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-list"></i>
+                            <p>
+                                Authenticator
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('authenticators.index') }}" class="nav-link {{ request()->routeIs('authenticators.index') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Lists</p>
                                 </a>
                             </li>
                         </ul>

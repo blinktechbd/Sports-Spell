@@ -3,7 +3,7 @@
     Home |
 @endpush
 @push('meta')
-    <!-- Open Graph / Facebook -->
+    {{-- <!-- Open Graph / Facebook -->
     <meta property="og:title" content="{{ getSetting()->meta_title }}" />
     <meta property="og:description" content="{{ getSetting()->meta_desc }}" />
     <meta property="og:image" content="{{ asset('/storage/assets/images/logo/' . getSetting()->meta_img) }}" />
@@ -18,7 +18,7 @@
     <meta name="twitter:image" content="{{ asset('/storage/assets/images/logo/' . getSetting()->meta_img) }}" />
     <meta name="twitter:url" content="{{ url('/') }}" />
     <meta name="twitter:site" content="@Sports" />
-    <meta name="twitter:creator" content="@Sports" />
+    <meta name="twitter:creator" content="@Sports" /> --}}
 @endpush
 @section('content')
     @if ($specialConts)
@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid special-item">
             <div class="container">
                 <div class="row my-4 top-special-content">
                     <div class="col-lg-12 d-flex justify-content-between">
@@ -55,29 +55,7 @@
                 <div class="row special-content">
                     <div class="col-lg-12">
                         <div class="row">
-                            @if (isset($specialConts[0]))
-                                <div class="col-sm-7 col-md-7 col-lg-8">
-                                    <a href="{{ route('categoryWiseContentDetails', [$specialConts[0]?->category?->slug, $specialConts[0]?->subcategory?->name, $specialConts[0]?->slug]) }}"
-                                        class="text-decoration-none">
-                                        <div class="card border-0 shadow-sm special-left-content">
-                                            <img class="card-img-top"
-                                                src="{{ asset('/storage/assets/images/blogs/' . $specialConts[0]['image']) }}"
-                                                alt="{{ $specialConts[0]['slug'] }}">
-                                            <div class="card-body">
-                                                <small class="text-muted">{{ bangla_date($specialConts[0]['created_at']) }} |
-                                                    {{ $specialConts[0]['author']['name'] ?? ''}}</small>
-                                                <h4 class="card-title my-2 text-danger">
-                                                   {{ Str::limit($specialConts[0]['title'], 40) }}
-                                                </h4>
-                                                <p class="card-text text-muted">
-                                                    {{ Str::limit(strip_tags($specialConts[0]['details']), 400) }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            @endif
-                            <div class="col-sm-5 col-md-5 col-lg-4">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 order-2 order-sm-2 order-md-2 order-lg-1">
                                 @if (isset($specialConts[1]))
                                     <a href="{{ route('categoryWiseContentDetails', [$specialConts[1]?->category?->slug, $specialConts[1]?->subcategory?->name, $specialConts[1]?->slug]) }}"
                                         class="text-decoration-none">
@@ -92,7 +70,7 @@
                                                     {{ Str::limit($specialConts[1]['title'], 25) }}
                                                 </h6>
                                                 <p class="card-text text-muted">
-                                                    {{ Str::limit(strip_tags($specialConts[1]['details']), 50) }}
+                                                    {{ Str::limit(strip_tags($specialConts[1]['details']), 35) }}
                                                 </p>
                                             </div>
                                         </div>
@@ -112,18 +90,40 @@
                                                     {{ Str::limit($specialConts[2]['title'], 25) }}
                                                 </h6>
                                                 <p class="card-text text-muted">
-                                                    {{ Str::limit(strip_tags($specialConts[2]['details']), 50) }}
+                                                    {{ Str::limit(strip_tags($specialConts[2]['details']), 35) }}
                                                 </p>
                                             </div>
                                         </div>
                                     </a>
                                 @endif
                             </div>
-                            <div class="col-sm-6 col-md-4 col-lg-4">
+                            @if (isset($specialConts[0]))
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-6 order-1 order-sm-1 order-md-1 order-lg-2 mb-sm-2 mb-md-2">
+                                    <a href="{{ route('categoryWiseContentDetails', [$specialConts[0]?->category?->slug, $specialConts[0]?->subcategory?->name, $specialConts[0]?->slug]) }}"
+                                        class="text-decoration-none">
+                                        <div class="card border-0 shadow-sm special-left-content">
+                                            <img class="card-img-top"
+                                                src="{{ asset('/storage/assets/images/blogs/' . $specialConts[0]['image']) }}"
+                                                alt="{{ $specialConts[0]['slug'] }}">
+                                            <div class="card-body">
+                                                <small class="text-muted">{{ bangla_date($specialConts[0]['created_at']) }} |
+                                                    {{ $specialConts[0]['author']['name'] ?? ''}}</small>
+                                                <h4 class="card-title my-2 text-danger">
+                                                   {{ Str::limit($specialConts[0]['title'], 40) }}
+                                                </h4>
+                                                <p class="card-text text-muted">
+                                                    {{ Str::limit(strip_tags($specialConts[0]['details']), 300) }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endif
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 order-3 order-sm-3 order-md-3 order-lg-3">
                                 @if (isset($specialConts[3]))
                                     <a href="{{ route('categoryWiseContentDetails', [$specialConts[3]?->category?->slug, $specialConts[3]?->subcategory?->name, $specialConts[3]?->slug]) }}"
                                         class="text-decoration-none">
-                                        <div class="card border-0 shadow-sm special-middle-content mt-2">
+                                        <div class="card border-0 shadow-sm special-middle-content">
                                             <img class="card-img-top"
                                                 src="{{ asset('/storage/assets/images/blogs/' . $specialConts[3]['image']) }}"
                                                 alt="{{ $specialConts[3]['slug'] }}">
@@ -134,14 +134,12 @@
                                                     {{ Str::limit($specialConts[3]['title'], 25) }}
                                                 </h6>
                                                 <p class="card-text text-muted">
-                                                    {{ Str::limit(strip_tags($specialConts[3]['details']), 50) }}
+                                                    {{ Str::limit(strip_tags($specialConts[3]['details']), 35) }}
                                                 </p>
                                             </div>
                                         </div>
                                     </a>
                                 @endif
-                            </div>
-                            <div class="col-sm-6 col-md-4 col-lg-4">
                                 @if (isset($specialConts[4]))
                                     <a href="{{ route('categoryWiseContentDetails', [$specialConts[4]?->category?->slug, $specialConts[4]?->subcategory?->name, $specialConts[4]?->slug]) }}"
                                         class="text-decoration-none">
@@ -156,29 +154,7 @@
                                                     {{ Str::limit($specialConts[4]['title'], 25) }}
                                                 </h6>
                                                 <p class="card-text text-muted">
-                                                    {{ Str::limit(strip_tags($specialConts[4]['details']), 50) }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                @endif
-                            </div>
-                            <div class="col-sm-6 col-md-4 col-lg-4">
-                                @if (isset($specialConts[5]))
-                                    <a href="{{ route('categoryWiseContentDetails', [$specialConts[5]?->category?->slug, $specialConts[5]?->subcategory?->name, $specialConts[5]?->slug]) }}"
-                                        class="text-decoration-none">
-                                        <div class="card border-0 shadow-sm special-middle-content mt-2">
-                                            <img class="card-img-top"
-                                                src="{{ asset('/storage/assets/images/blogs/' . $specialConts[5]['image']) }}"
-                                                alt="{{ $specialConts[5]['slug'] }}">
-                                            <div class="card-body px-2">
-                                                <small class="text-muted">{{ bangla_date($specialConts[5]['created_at']) }} |
-                                                    {{ $specialConts[5]['author']['name'] ?? ''}}</small>
-                                                <h6 class="card-title my-2 text-danger">
-                                                    {{ Str::limit($specialConts[5]['title'], 25) }}
-                                                </h6>
-                                                <p class="card-text text-muted">
-                                                    {{ Str::limit(strip_tags($specialConts[5]['details']), 50) }}
+                                                    {{ Str::limit(strip_tags($specialConts[4]['details']), 35) }}
                                                 </p>
                                             </div>
                                         </div>
@@ -565,7 +541,7 @@
                                                             {{ bangla_date($mainContent->created_at) }} | {{ $mainContent['author']['name'] ?? ''}}
                                                         </small>
                                                         <h4 class="card-title my-2 text-danger">
-                                                            {{ Str::limit($mainContent->title, 30) }}
+                                                            {{ Str::limit($mainContent->title, 25) }}
                                                         </h4>
                                                         <p class="card-text text-muted">
                                                              {{ Str::limit(strip_tags($content['details']), 170) }}

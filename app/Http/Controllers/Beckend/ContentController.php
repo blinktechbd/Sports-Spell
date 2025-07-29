@@ -53,16 +53,24 @@ class ContentController extends Controller
         ]);
         if ($request->hasFile('image')){
             $width = 750; $height = 390;
+            $ogWidth = 1200; $ogHeight = 600;
             $folder = 'assets/images/blogs/';
+            $ogFolder = 'assets/images/blogs/og/';
             $validated['image'] = $this->services->imageUpload($request->file('image'), $folder,$width,$height);
+            $validated['og'] = $this->services->imageUpload($request->file('image'), $ogFolder,$ogWidth,$ogHeight);
         }
+        $title = $validated['title'];
+        $title = str_replace([',', '?'], '', $title);
+        $title = preg_replace('/\s+/', '-', $title);
+        $slug = trim($title, '-');
         Content::create([
             'category_id' => $validated['category_id'],
             'subcategory_id' => $validated['subcategory_id'],
             'author_id' => $validated['author_id'],
             'title' => $validated['title'],
-            'slug' => str_replace(' ', '-', $validated['title']),
+            'slug' => $slug,
             'image' => $validated['image'],
+            'og' => $validated['og'],
             'caption' => $validated['caption'],
             'details' => $validated['details'],
             'tags' => json_encode(explode(',', $validated['tags'])),
@@ -111,17 +119,26 @@ class ContentController extends Controller
         ]);
         if ($request->hasFile('image')){
             $width = 750; $height = 390;
+            $ogWidth = 1200; $ogHeight = 600;
             $folder = 'assets/images/blogs/';
+            $ogFolder = 'assets/images/blogs/og/';
             $this->services->imageDestroy($content->image, $folder);
+            $this->services->imageDestroy($content->og, $ogFolder);
             $validated['image'] = $this->services->imageUpload($request->file('image'), $folder,$width,$height);
+            $validated['og'] = $this->services->imageUpload($request->file('image'), $ogFolder,$ogWidth,$ogHeight);
         }
+        $title = $validated['title'];
+        $title = str_replace([',', '?'], '', $title);
+        $title = preg_replace('/\s+/', '-', $title);
+        $slug = trim($title, '-');
         $content->update([
             'category_id' => $validated['category_id'],
             'subcategory_id' => $validated['subcategory_id'],
             'author_id' => $validated['author_id'],
             'title' => $validated['title'],
-            'slug' => str_replace(' ', '-', $validated['title']),
+            'slug' =>  $slug,
             'image' => !empty($validated['image']) ? $validated['image'] : $content->image,
+            'image' => !empty($validated['og']) ? $validated['og'] : $content->og,
             'caption' => $validated['caption'],
             'details' => $validated['details'],
             'tags' => json_encode(explode(',', $validated['tags'])),
@@ -136,7 +153,9 @@ class ContentController extends Controller
     {
         $content = Content::findOrFail($id);
         $folder = 'assets/images/blogs/';
+        $ogFolder = 'assets/images/blogs/og/';
         $this->services->imageDestroy($content->image, $folder);
+        $this->services->imageDestroy($content->og, $ogFolder);
         $content->delete();
         return redirect()->back()->with('message', 'Content deleted successfully.');
     }

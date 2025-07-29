@@ -80,7 +80,11 @@
                                                 <td>{{ $user->name ?? '' }}</td>
                                                 <td>{{ $user->email ?? '' }}</td>
                                                 <td>
-                                                    <img class="content-image" src="{{ asset('/storage/assets/images/profile/' . ($user->image ?? 'profile.png')) }}" alt="profile-image">
+                                                    @if($user->facebook_id || $user->google_id)
+                                                        <img class="content-image" src="{{ $user->image }}" alt="profile-image">
+                                                    @else
+                                                        <img class="content-image" src="{{ asset('/storage/assets/images/profile/' . ($user->image ?? 'profile.png')) }}" alt="profile-image">
+                                                    @endif
                                                 </td>
                                                 <td><span class="badge badge-info">{{ Str::ucfirst($user->is_role ?? '') }}</span></td>
                                                 <td class="d-flex justify-content-center">

@@ -1,6 +1,6 @@
 @extends('beckend.layouts.app')
 @push('title')
-    Authors
+    Authenticator User Lists
 @endpush
 @push('adminAppendCss')
     <link rel="stylesheet" href="{{ asset('/storage/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -30,9 +30,10 @@
         .page-link:hover {
             color: #dc3545;
         }
-
         .content-image{
             width:32px;
+            height: 32px;
+            border-radius: 50%;
         }
     </style>
 @endpush
@@ -40,12 +41,11 @@
     @push('breadcumb')
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-danger">Authors</h1>
+                <h1 class="m-0 text-danger">Authenticator User Lists</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a class="text-danger" href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a class="text-danger" href="{{ route('authors.create') }}">Create</a></li>
                     <li class="breadcrumb-item active text-danger">Lists</li>
                 </ol>
             </div>
@@ -57,39 +57,41 @@
                 <div class="col-lg-12">
                     <div class="card card-danger card-outline mb-4">
                         <div class="card-header">
-                            <div class="card-title text-danger">Author Lists</div>
+                            <div class="card-title text-danger">Authenticator User Lists</div>
                         </div>
                         <div class="card-body">
                             <div style="overflow-x:auto; width:100%;">
-                                <table id="authorsTable" class="table table-bordered table-striped">
+                                <table id="usersTable" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th>SL</th>
                                             <th>NAME</th>
+                                            <th>EMAIL</th>
                                             <th>IMAGE</th>
                                             <th class="text-center">ACTION</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($authors as $author)
+                                        @foreach ($authenticators as $authenticator)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $author->name ?? '' }}</td>
+                                                <td>{{ $authenticator->name ?? '' }}</td>
+                                                <td>{{ $authenticator->email ?? '' }}</td>
                                                 <td>
-                                                    <img class="content-image" src="{{ asset('/storage/assets/images/author/'.$author->image) }}" alt="author">
+                                                    @if($authenticator->facebook_id || $authenticator->google_id)
+                                                        <img class="content-image" src="{{ $authenticator->image }}" alt="profile-image">
+                                                    @else
+                                                        <img class="content-image" src="{{ asset('/storage/assets/images/profile/' . ($authenticator->image ?? 'profile.png')) }}" alt="profile-image">
+                                                    @endif
                                                 </td>
                                                 <td class="d-flex justify-content-center">
-                                                    <a class="pr-3" href="{{ route('authors.edit',$author->id) }}" data-toggle="tooltip" data-placement="top" title="Author Edit"><i class="fa fa-edit text-danger"></i></a>
-
-                                                    @if(Auth::user()->is_role !== 'editor')
-                                                        <form action="{{ route('authors.destroy', $author->id) }}" method="POST" style="display:inline;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline" data-toggle="tooltip" data-placement="top" title="Author Delete" onclick="return confirm('Are you sure?')">
-                                                                <i class="fa fa-trash text-danger"></i>
-                                                            </button>
-                                                        </form>
-                                                    @endif
+                                                    <form action="{{ route('authenticators.destroy', $authenticator->id) }}" method="post" class="d-inline-block">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-link text-danger p-0" data-toggle="tooltip" data-placement="top" title="Authenticator User Delete">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -111,7 +113,7 @@
     <script src="{{ asset('/storage/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
     <script>
         $(function() {
-            $("#authorsTable").DataTable({
+            $("#usersTable").DataTable({
                 "responsive": true,
                 "lengthChange": true,
                 "autoWidth": true,

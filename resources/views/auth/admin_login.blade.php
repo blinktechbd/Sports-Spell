@@ -12,7 +12,7 @@
         <div class="card">
             <div class="card-body login-card-body">
                 <div class="text-center">
-                    <img class="" src="{{ asset('/storage/assets/images/logo/logo.png') }}" alt="Sports Spell">
+                    <img class="" src="{{ asset('/storage/assets/images/logo/'.getSetting()->logo) }}" alt="Sports Spell">
                 </div>
                 <form action="{{ route('admin.login') }}" method="post">
                     @csrf

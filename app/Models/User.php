@@ -24,6 +24,8 @@ class User extends Authenticatable
         'image',
         'pin',
         'is_role',
+        'google_id',
+        'facebook_id'
     ];
 
     public function comments(){

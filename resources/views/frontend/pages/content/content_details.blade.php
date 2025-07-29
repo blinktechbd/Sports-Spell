@@ -7,20 +7,23 @@
 @push('meta')
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content="{{ $content->title }}" />
-    <meta property="og:description" content="{{ Str::limit(strip_tags($content->details ?? ''), 160) }}" />
-    <meta property="og:image" content="{{ asset('/storage/assets/images/blog/' . $content->image) }}" />
-    <meta property="og:url" content="{{ url('/') }}" />
-    <meta property="og:type" content="website" />
+    <meta property="og:description" content="{{ Str::limit(strip_tags($content->details ?? ''), 150) }}" />
+    <meta property="og:image" content="{{ asset('storage/assets/images/blog/og/' . $content->og) }}" />
+    <meta property="og:url" content="{{ request()->fullUrl() }}" />
+    <meta property="og:type" content="article" />
     <meta property="og:site_name" content="{{ getSetting()->site_title }}" />
-    <meta name="description" content="{{ getSetting()->site_desc }}">
+
+    <!-- General SEO -->
+    <meta name="description" content="{{ Str::limit(strip_tags($content->details ?? ''), 150) }}" />
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{ $content->title }}" />
-    <meta name="twitter:description" content="{{ Str::limit(strip_tags($content->details ?? ''), 160) }}" />
-    <meta name="twitter:image" content="{{ asset('/storage/assets/images/blog/' . $content->image) }}" />
-    <meta name="twitter:url" content="{{ url('/') }}" />
-    <meta name="twitter:site" content="@Sports" />
-    <meta name="twitter:creator" content="@Sports" />
+    <meta name="twitter:description" content="{{ Str::limit(strip_tags($content->details ?? ''), 150) }}" />
+    <meta name="twitter:image" content="{{ asset('storage/assets/images/blog/og/' . $content->og) }}" />
+    <meta name="twitter:url" content="{{ request()->fullUrl() }}" />
+    <meta name="twitter:site" content="@SportsSpell" />
+    <meta name="twitter:creator" content="@SportsSpell" />
 @endpush
 @section('content')
     {{-- header-top-ad --}}
@@ -62,10 +65,17 @@
                         <div class="row d-flex justify-content-center">
                             <div class="col-lg-10">
                                 <div class="card-body shadow-sm">
-                                    <div class="row my-4 d-flex align-items-center">
-                                        <div class="col-12 col-sm-6">
-                                            <small class="text-muted">{{ bangla_date($content->created_at) }} |
-                                                 {{ $content->author->name ?? ''}}</small>
+                                    <div class="row my-4 d-flex align-items-center author-box">
+                                        <div class="col-12 col-sm-6 d-flex align-items-center gap-2">
+                                            <div style="border-radius: 50%; overflow: hidden; width: 42px; height: 42px;border: 2px solid #dc3545;">
+                                                <img style="width: 100%; height: 100%; object-fit: cover; padding: 5px;"
+                                                    src="{{ asset('/storage/assets/images/author/' . ($content->author->image ?? 'author.png')) }}"
+                                                    alt="author">
+                                            </div>
+                                            <div class="author_info">
+                                                <small class="text-danger">{{ $content->author->name ?? ''}}</small><br>
+                                                <small class="text-danger">{{ bangla_date($content->created_at) }}</small>
+                                            </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="sharethis-inline-share-buttons z-0"></div>
