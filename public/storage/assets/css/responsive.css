@@ -1,0 +1,296 @@
+/* xs device */
+@media (min-width: 360px) and (max-width: 575px) {
+    header {
+        .logo img {
+            width: 110px;
+            height: 35px;
+        }
+        .menu {
+            display: none;
+        }
+        .acc {
+            display: none !important;
+        }
+        .mobile-menu {
+            display: inline-block;
+        }
+    }
+    .header-bottom-ad {
+        img {
+            width: 328px;
+            height: 35px;
+        }
+    }
+    .top-special-content {
+        .category-listing {
+            .category {
+                h5 {
+                    a {
+                        font-size: 15px;
+                    }
+                }
+            }
+        }
+        .tab {
+            margin-top: 4px;
+            font-size: 12px;
+        }
+    }
+    .special-content {
+        .special-left-content {
+            margin: 0px 0px 15px 0px;
+        }
+        .special-middle-content {
+            margin: 0px 0px 15px 0px;
+        }
+        .special-bottom-content {
+            div {
+                margin-top: -15px;
+            }
+        }
+        .category-wise-content {
+            .category-listing {
+                .category {
+                    h5 {
+                        a {
+                            font-size: 15px;
+                        }
+                    }
+                }
+            }
+            .tab {
+                margin-top: 3px;
+                font-size: 12px;
+            }
+        }
+        .tab-content {
+            .tab-pane {
+                p {
+                    margin: 10px 0px;
+                }
+            }
+        }
+    }
+    .category-content {
+        .special-left-content {
+            margin: 0px 0px 15px 0px;
+        }
+        .special-middle-content {
+            margin: 0px 0px 15px 0px;
+        }
+        .special-bottom-content {
+            div {
+                margin-top: -15px;
+            }
+        }
+        .category-wise-content {
+            .category-listing {
+                .category {
+                    h5 {
+                        a {
+                            font-size: 15px;
+                        }
+                    }
+                }
+            }
+            .tab {
+                margin-top: 3px;
+                font-size: 12px;
+            }
+        }
+        .tab-content {
+            .tab-pane {
+                p {
+                    margin: 10px 0px;
+                }
+            }
+        }
+    }
+
+    .partitioning-column {
+        .category-listing {
+            .category {
+                h5 {
+                    a {
+                        font-size: 15px;
+                    }
+                }
+            }
+        }
+        .tab {
+            margin-top: 3px;
+            font-size: 12px;
+        }
+    }
+
+    .content-details {
+        .category-wise-content {
+            .category-listing {
+                .category {
+                    h5 {
+                        a {
+                            font-size: 15px;
+                        }
+                    }
+                }
+            }
+            .tab {
+                margin-top: 3px;
+                font-size: 12px;
+            }
+        }
+        .tab-content {
+            .tab-pane {
+                p {
+                    margin: 10px 0px;
+                }
+            }
+        }
+    }
+    .author-box{
+        flex-direction: column-reverse;
+    }
+    .sharethis-inline-share-buttons{
+        margin-top:-10px !important;
+        margin-bottom:20px !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+}
+
+/* sm device */
+@media (min-width: 576px) and (max-width: 767px) {
+    header {
+        .menu {
+            display: none;
+        }
+        .acc {
+            display: none !important;
+        }
+        .mobile-menu {
+            display: inline-block;
+        }
+    }
+    .header-bottom-ad {
+        img {
+            width: 328px;
+            height: 35px;
+        }
+    }
+    .special-content-right-ad {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0px !important;
+
+        img {
+            width: 300px !important;
+        }
+    }
+    .online-poll{
+        margin: 20px 0px;
+    }
+}
+
+/* md device */
+@media (min-width: 768px) and (max-width: 991px) {
+    header {
+        .menu {
+            display: none;
+        }
+        .acc {
+            display: none !important;
+        }
+        .mobile-menu {
+            display: inline-block;
+        }
+    }
+    .header-bottom-ad {
+        img {
+            width: 528px;
+            height: 50px;
+        }
+    }
+    .special-content-right-ad {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0px !important;
+
+        img {
+            width: 300px !important;
+        }
+    }
+    .special-middle-content {
+        .card-body {
+            padding: 10px 0px;
+            h6 {
+                font-size: 16px;
+            }
+        }
+    }
+    .online-poll{
+        margin: 20px 0px;
+    }
+}
+
+/* lg device */
+@media (min-width: 992px) and (max-width: 1199px) {
+    header {
+        .menu {
+            ul li a {
+                font-size: 14px;
+                padding: 17px 12px;
+            }
+        }
+        .mobile-menu {
+            display: none !important;
+        }
+    }
+    .header-bottom-ad {
+        img {
+            width: 628px;
+            height: 55px;
+        }
+    }
+}
+
+/* xl device */
+@media (min-width: 1200px) and (max-width: 1399px) {
+    header {
+        .menu {
+            ul li a {
+                font-size: medium;
+                padding: 17px 18px;
+            }
+        }
+        .mobile-menu {
+            display: none !important;
+        }
+    }
+    .header-bottom-ad {
+        img {
+            width: 628px;
+            height: 60px;
+        }
+    }
+}
+
+/* xxl device */
+@media (min-width: 1400px) {
+    header {
+        .mobile-menu {
+            display: none !important;
+        }
+    }
+    .header-bottom-ad {
+        img {
+            width: 728px;
+            height: 60px;
+        }
+    }
+    .special-middle-content {
+        .card-body {
+            padding: 11px 0px;
+        }
+    }
+}
