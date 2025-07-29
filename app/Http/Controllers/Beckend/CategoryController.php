@@ -35,6 +35,7 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|unique:categories,name',
+            'type' => 'required',
         ]);
         $category = new Category;
         if($validated['type'] == 'special'){

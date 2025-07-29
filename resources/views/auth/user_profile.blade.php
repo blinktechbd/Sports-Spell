@@ -131,12 +131,14 @@
                                                     class="form-control form-control-danger @error('email') is-invalid @enderror mb-2 border-1 border-danger"
                                                     placeholder="Email" data-toggle="tooltip" data-placement="top"
                                                     title="Email" value="{{ $user->email }}" required />
+                                                @if ($user->facebook_id || $user->google_id)
 
-                                                <input type="text" name="pin"
-                                                    class="form-control form-control-danger @error('pin') is-invalid @enderror mb-2 border-1 border-danger"
-                                                    placeholder="Password" data-toggle="tooltip" data-placement="top"
-                                                    title="Password" value="{{ $user->pin }}" required />
-
+                                                @else
+                                                    <input type="text" name="pin"
+                                                        class="form-control form-control-danger @error('pin') is-invalid @enderror mb-2 border-1 border-danger"
+                                                        placeholder="Password" data-toggle="tooltip" data-placement="top"
+                                                        title="Password" value="{{ $user->pin }}" required />
+                                                @endif
 
                                                 <div class="d-flex justify-content-end mt-3">
                                                     <button type="submit" class="btn btn-sm btn-danger">Profile

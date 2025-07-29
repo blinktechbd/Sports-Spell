@@ -29,7 +29,7 @@
                                     src="{{ asset('/storage/assets/images/gallery/' . $leftContent->image) }}"
                                     alt="{{ $leftContent->title }}">
                                 <div class="card-body px-2 py-2 m-0">
-                                    <h5 class="card-title my-2 text-danger">
+                                    <h5 class="card-title my-3 text-danger">
                                         {{ Str::limit($leftContent->title, 40) }}
                                     </h5>
                                 </div>

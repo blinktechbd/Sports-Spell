@@ -1,7 +1,7 @@
 <header class="d-flex justify-content-between align-items-center gap-3">
     <a href="{{ route('home') }}" class="text-decoration-none">
         <div class="logo">
-            <img src="{{ asset('/storage/assets/images/logo/' . getSetting()->logo) }}" alt="logo">
+            <img class="bg-white px-2" src="{{ asset('/storage/assets/images/logo/' . getSetting()->logo) }}" alt="logo">
         </div>
     </a>
 
@@ -101,7 +101,7 @@
             <div class="offcanvas-header bg-danger m-0 px-4 py-0">
                 <a href="{{ route('home') }}" class="text-decoration-none">
                     <div class="logo">
-                        <img src="{{ asset('/storage/assets/images/logo/' . getSetting()->logo) }}" alt="logo">
+                        <img class="bg-white px-2" src="{{ asset('/storage/assets/images/logo/' . getSetting()->logo) }}" alt="logo">
                     </div>
                 </a>
                 <button type="button" class="btn-close text-reset btn-close-white" data-bs-dismiss="offcanvas"
@@ -110,10 +110,36 @@
             <div class="offcanvas-body">
                 <ul class="mobile-menu-lists">
                     @foreach ($allMenus as $item)
-                        <li><a class="text-danger" href="{{ route('category-wise-content', $item->slug) }}">{{ $item->name }}</a></li>
+                        <li style="background: #fdedec"><a class="text-center text-danger px-2" href="{{ route('category-wise-content', $item->slug) }}">{{ $item->name }}</a></li>
                     @endforeach
-                    <li><a class="text-danger" href="{{ route('category-wise-content', 'today-sports') }}">আজকের খেলা</a></li>
-                    <li><a class="text-danger" href="{{ route('photoGalleries') }}">গ্যালারি</a></li>
+                    <li style="background: #fdedec"><a class="text-center text-danger px-2" href="{{ route('category-wise-content', 'today-sports') }}">আজকের খেলা</a></li>
+                    <li style="background: #fdedec"><a class="text-center text-danger px-2" href="{{ route('photoGalleries') }}">গ্যালারি</a></li>
+                    <li class="d-flex justify-content-center gap-3 mt-2">
+                        <a  href="{{ getSetting()->social_fb ?? '#' }}" target="_blank"
+                            class="d-inline-flex align-items-center text-white justify-content-center
+                                        rounded-circle text-danger text-decoration-none"
+                            style="width: 30px; height: 30px; background: #dc3545;">
+                            <i class="{{ getSetting()->social_fb_icon ?? 'fab fa-facebook-f' }}"></i>
+                        </a>
+                        <a  href="{{ getSetting()->social_tw ?? '#' }}" target="_blank"
+                            class="d-inline-flex align-items-center text-white justify-content-center
+                                        rounded-circle text-danger text-decoration-none"
+                            style="width: 30px; height: 30px; background: #dc3545;">
+                            <i class="{{ getSetting()->social_tw_icon ?? 'fab fa-twitter' }}"></i>
+                        </a>
+                        <a  href="{{ getSetting()->social_ln ?? '#' }}" target="_blank"
+                            class="d-inline-flex align-items-center text-white justify-content-center
+                                        rounded-circle text-danger text-decoration-none"
+                            style="width: 30px; height: 30px; background: #dc3545;">
+                            <i class="{{ getSetting()->social_ln_icon ?? 'fab fa-linkedin' }}"></i>
+                        </a>
+                        <a  href="{{ getSetting()->social_yt ?? '#' }}" target="_blank"
+                            class="d-inline-flex align-items-center text-white justify-content-center
+                                        rounded-circle text-danger text-decoration-none"
+                            style="width: 30px; height: 30px; background: #dc3545;">
+                            <i class="{{ getSetting()->social_yt_icon ?? 'fab fa-youtube' }}"></i>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

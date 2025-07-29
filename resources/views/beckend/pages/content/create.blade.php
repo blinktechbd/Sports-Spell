@@ -335,11 +335,11 @@
                                         }
 
                                         const html = data.caption ?
-                                            `<figure class="image w-100" contenteditable="false">
-                     <img class="w-100" src="${res.file_path}" alt="${file.name}" />
-                     <figcaption class="text-center" contenteditable="true" style="background:#eaecee;">Write caption here...</figcaption>
-                   </figure>` :
-                                            `<figure class="image w-100" contenteditable="false"><img class="w-100" src="${res.file_path}" alt="${file.name}"/></figure>`;
+                                            `<figure class="image w-100">
+                                                <img class="w-100" src="${res.file_path}" alt="${file.name}" />
+                                                <figcaption class="text-center"  style="background:#eaecee">Write caption here...</figcaption>
+                                            </figure>`:
+                                            `<figure class="image w-100" ><img class="w-100" src="${res.file_path}" alt="${file.name}"/></figure>`;
 
                                         editor.insertContent(html);
                                         api.close();

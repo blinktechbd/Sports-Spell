@@ -29,7 +29,7 @@
         <div class="container-fluid">
             <div class="row g-4">
                 <div class="col-lg-6">
-                    <form action="{{ route('authors.store') }}" method="post">
+                    <form action="{{ route('authors.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="card card-danger card-outline mb-4">
                             <div class="card-header">
@@ -43,6 +43,17 @@
                                             placeholder="Author Name" data-toggle="tooltip" data-placement="top"
                                             title="Author Name" value="{{ old('name') }}"/>
                                         @error('name')
+                                            <div class="invalid-feedback d-block">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <input type="file" name="image"
+                                            class="form-control form-control-danger @error('image') is-invalid @enderror"
+                                            placeholder="Author Name" data-toggle="tooltip" data-placement="top"
+                                            title="Author Image" value="{{ old('image') }}"/>
+                                        @error('image')
                                             <div class="invalid-feedback d-block">
                                                 {{ $message }}
                                             </div>

@@ -244,6 +244,12 @@
                                                             {{ $setting->privacy_policy }}
                                                         </textarea>
                                                     </div>
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="top" title="Terms and Policies Details">
+                                                        <label for="" class="text-danger">Terms Policies</label>
+                                                        <textarea name="terms_policy" class="form-control summernote" id="" placeholder="Terms and Policies Details">
+                                                            {{ $setting->terms_policy }}
+                                                        </textarea>
+                                                    </div>
                                                     <div class="d-flex justify-content-end mt-3">
                                                         <button type="submit" class="btn btn-sm btn-danger">Settings
                                                             Save</button>

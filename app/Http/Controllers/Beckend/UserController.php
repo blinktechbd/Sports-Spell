@@ -21,7 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
+        $users = User::where('is_role', '!=', 'user')->get();
         return view('beckend.pages.user.index', compact('users'));
     }
 
@@ -95,7 +95,9 @@ class UserController extends Controller
         if ($request->hasFile('image')){
             $width = 225; $height = 225;
             $folder = 'assets/images/profile/';
-            $validated['image'] = $this->services->imageDestroy($user->image, $folder);
+            if ($user->image && $user->image != 'profile.png') {
+                $this->services->imageDestroy($user->image, $folder);
+            }
             $validated['image'] = $this->services->imageUpload($request->image, $folder,$width,$height);
             $user->image = $validated['image'];
         }
@@ -115,7 +117,9 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $folder = 'assets/images/profile/';
-        $this->services->imageDestroy($user->image, $folder);
+        if ($user->image && $user->image != 'profile.png') {
+            $this->services->imageDestroy($user->image, $folder);
+        }
         $user->delete();
         return redirect()->back()->with('message', 'User deleted successfully.');
     }

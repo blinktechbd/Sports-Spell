@@ -23,10 +23,11 @@ class HomeController extends Controller
         $galleries = Gallery::count();
         $todaySports = TodaySport::whereDate('match_time', today())->where(['status'=>'active'])->count();
         $onlinePolls = VotePoll::where(['status'=>'active'])->count();
-        $users = User::count();
+        $users = User::where('is_role','!=','user')->count();
+        $authenticators = User::where('is_role','user')->count();
         $authors = Author::count();
         $comments = Comment::count();
         $totalVisitors = Content::sum('visitor_count');
-        return view('beckend.pages.dashboard',compact('categories','subcategories','contents','galleries','todaySports','onlinePolls','users','authors','comments','totalVisitors'));
+        return view('beckend.pages.dashboard',compact('categories','subcategories','contents','galleries','todaySports','onlinePolls','users','authenticators','authors','comments','totalVisitors'));
     }
 }

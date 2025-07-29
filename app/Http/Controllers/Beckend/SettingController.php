@@ -71,6 +71,9 @@ class SettingController extends Controller
             if ($request->privacy_policy) {
                 $setting->privacy_policy = $request->privacy_policy;
             }
+            if ($request->terms_policy) {
+                $setting->terms_policy = $request->terms_policy;
+            }
             if ($request->hasFile('favicon')){
                 $width = 32; $height = 32;
                 $folder = 'assets/images/logo/';

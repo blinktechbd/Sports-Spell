@@ -61,6 +61,14 @@
     <div class="container-fluid footer">
         @include('frontend.layouts.footer')
     </div>
+    <div class="container-fluid bottom-footer">
+        <div class="container">
+            <div class="row">
+                <b>© {{ date('Y') }} Sports Spell | All Rights Reserved</b>
+            </div>
+        </div>
+    </div>
+
     @include('frontend.layouts.scripts')
 
     <!-- Search Modal -->

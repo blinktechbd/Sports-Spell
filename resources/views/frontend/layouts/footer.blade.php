@@ -2,19 +2,20 @@
     <div class="row">
         <div class="col-lg-4 text-center">
             <div class="logo">
-                <img class="" src="{{ asset('/storage/assets/images/logo/'.getSetting()->logo) }}" alt="footer-logo">
+                <img class="bg-white px-2" src="{{ asset('/storage/assets/images/logo/'.getSetting()->logo) }}" alt="footer-logo">
             </div>
             <div class="descripton">
                 <p class="mt-4 text-justify">{{ getSetting()->site_desc ?? '' }}</p>
             </div>
         </div>
         <div class="col-lg-4 text-center">
-            <p class="fs-5 fw-bold">মেনু</p>
+            <p class="fs-5 fw-bold">Sports Spell</p>
             <ul class="list-unstyled">
                 <li><a href="{{ route('home') }}" class="text-decoration-none text-white">হোম</a></li>
                 <li><a href="{{ route('about') }}" class="text-decoration-none text-white">আমাদের সম্পর্কে</a></li>
-                <li><a href="{{ route('contact') }}" class="text-decoration-none text-white">যোগাযোগ করুন</a></li>
+                <li><a href="{{ route('contact') }}" class="text-decoration-none text-white">যোগাযোগ</a></li>
                 <li><a href="{{ route('privacyPolicy') }}" class="text-decoration-none text-white">গোপনীয়তা নীতি</a></li>
+                <li><a href="{{ route('termsPolicy') }}" class="text-decoration-none text-white">শর্তবলি ও নীতিমালা </a></li>
             </ul>
         </div>
         <div class="col-lg-4 text-center">
@@ -52,3 +53,4 @@
         </div>
     </div>
 </div>
+

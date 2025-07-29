@@ -104,6 +104,18 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
                 <div class="inner">
+                    <h3>{{ $authenticators }}</h3>
+                    <p>Authenticator Users</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="{{ route('authenticators.index') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+                <div class="inner">
                     <h3>{{ $authors }}</h3>
                     <p>Authors</p>
                 </div>

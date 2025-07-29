@@ -162,7 +162,7 @@
                         </div>
                         <div class="text-center">
                             <h4 class="text-danger">{{ $todaySport->match_title ?? '' }}</h4>
-                            <h6 class="text-danger">{{ $todaySport->match_stadium ?? '' }}</h6>
+                            <h6 class="text-danger">ভেন্যু: {{ $todaySport->match_stadium ?? '' }}</h6>
                             <p class="text-danger">বাংলাদেশ সময়:
                                 {{ Carbon\Carbon::parse($todaySport->match_time)->format('h:i A') ?? '' }}
                                 ({{ \Carbon\Carbon::parse($todaySport->match_time)->locale('bn')->translatedFormat('l') ?? '' }})

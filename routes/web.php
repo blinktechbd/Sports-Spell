@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Beckend\AdMangementController;
+use App\Http\Controllers\Beckend\AuthenticatorController;
 use App\Http\Controllers\Beckend\AuthorController;
 use App\Http\Controllers\Beckend\UserController;
 use App\Http\Controllers\Frontend\HomeController;
@@ -33,6 +34,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::resource('/galleries',GalleryController::class);
     Route::get('/delete-gallery-item/{item_id}',[GalleryController::class,'deleteGalleryItem'])->name('deleteGalleryItem');
     Route::resource('/users',UserController::class);
+    Route::resource('/users',UserController::class);
+    Route::resource('/authenticators',AuthenticatorController::class);
     Route::resource('/authors',AuthorController::class);
     Route::resource('/today-sports',TodaySportsController::class);
     Route::resource('/vote-polls',VotePollController::class);
@@ -50,6 +53,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 //frontend route
 Route::match(['get','post'],'/login',[AuthController::class,'userLogin'])->name('login');
 Route::match(['get','post'],'/sign-up',[AuthController::class,'userSignUp'])->name('userSignUp');
+//google login
+Route::get('/auth/google', [AuthController::class, 'redirectToGoogle']);
+Route::get('/auth/callback/google', [AuthController::class, 'handleGoogleCallback']);
+//facebook login
+Route::get('/auth/facebook', [AuthController::class, 'redirectToFacebook']);
+Route::get('/auth/facebook/callback', [AuthController::class, 'handleFacebookCallback']);
+
 Route::middleware(['auth', 'web'])->group(function () {
     Route::match(['get','post'],'/profile',[HomeController::class,'profile'])->name('profile');
     Route::get('logout',[AuthController::class,'logout'])->name('logout');
@@ -58,6 +68,8 @@ Route::get('/',[HomeController::class,'home'])->name('home');
 Route::get('/about',[HomeController::class,'about'])->name('about');
 Route::get('/contact',[HomeController::class,'contact'])->name('contact');
 Route::get('/privacy-policy',[HomeController::class,'privacy_policy'])->name('privacyPolicy');
+Route::get('/terms-policies',[HomeController::class,'terms_policy'])->name('termsPolicy');
+Route::get('/sitemap.xml', [HomeController::class,'site_map'])->name('siteMap');
 Route::get('/today-sports/{category_slug}',[HomeController::class,'today_cat_sports'])->name('todayCatSports');
 Route::get('/content-search', [HomeController::class, 'contentSearch'])->name('contentSearch');
 Route::get('/tag-search', [HomeController::class, 'tagSearch'])->name('tagSearch');

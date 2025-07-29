@@ -74,18 +74,18 @@
                             </div>
                         </div>
                     @endforeach
-
                     {{-- details-bottom-ad --}}
                     <div class="container-fluid">
                         <div class="container">
                             <div class="header-bottom-ad">
-                                <img src="{{ asset('/storage/assets/images/ads/header-bottom-ad.jpg') }}"
+                                <img src="{{ asset('/storage/assets/images/ads/'.ad_management()->home_category_bottom) }}"
                                     alt="header-bottom-ad">
                             </div>
                         </div>
                     </div>
-
                 </div>
+
+
 
                 {{-- left content --}}
                 <div class="col-lg-4">
@@ -118,7 +118,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

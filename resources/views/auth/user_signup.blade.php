@@ -38,11 +38,11 @@
     <div class="container-fluid">
         <div class="container">
             <div class="signup-box row d-flex justify-content-center">
-                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-8 col-md-6 col-lg-4">
                     <div class="card border-1 border-danger">
                         <div class="card-body signup-card-body">
-                            <div class="text-center mb-5">
-                                <img class="" src="{{ asset('/storage/assets/images/logo/logo.png') }}" alt="Sports Spell">
+                            <div class="text-center mb-2">
+                                {{-- <img class="" src="{{ asset('/storage/assets/images/logo/logo.png') }}" alt="Sports Spell"> --}}
                                 <h5 class="fw-bold my-3 text-danger">সাইন-আপ করুন</h5>
                             </div>
                             <form action="{{ route('userSignUp') }}" method="post" enctype="multipart/form-data">
