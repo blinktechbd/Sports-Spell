@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->text('slug');
             $table->string('image');
+            $table->string('og')->nullable();
             $table->string('caption')->nullable();
             $table->longText('details');
             $table->text('tags')->comment('array format');
