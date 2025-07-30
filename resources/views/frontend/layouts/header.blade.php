@@ -27,7 +27,7 @@
             </li>
             @if ($moreMenus->isNotEmpty())
                 <li class="has-submenu">
-                    <a href="#">আরও খেলা</a>
+                    <a href="#">অন্যান্য</a>
                     <ul class="sub-menu shadow">
                         <div class="row p-0 m-0">
                             @foreach ($chunks as $chunk)

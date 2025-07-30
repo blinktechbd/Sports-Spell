@@ -21,8 +21,8 @@
         <div class="col-lg-4 text-center">
             <p class="fs-5 fw-bold">যোগাযোগ</p>
             <ul class="list-unstyled">
-                <li><a href="#" class="text-decoration-none text-white">ইমেইল : {{ getSetting()->email ?? '' }}</a></li>
-                <li><a href="#" class="text-decoration-none text-white">ঠিকানা : {{ getSetting()->address ?? '' }}</a></li>
+                <li><a href="#" class="text-decoration-none text-white"><i class="fas fa-envelope"></i> {{ getSetting()->email ?? '' }}</a></li>
+                <li><a href="#" class="text-decoration-none text-white"><i class="fas fa-map-marker-alt"></i> {{ getSetting()->address ?? '' }}</a></li>
                 <li class="d-flex justify-content-center gap-3 mt-2">
                     <a href="{{ getSetting()->social_fb ?? '#' }}" target="_blank"
                         class="d-inline-flex align-items-center justify-content-center

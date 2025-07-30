@@ -82,9 +82,9 @@
                                         </div>
                                     </div>
 
-                                    <h3 class="card-title my-2 text-danger">
+                                    <h2 class="card-title my-2 text-danger">
                                         {{ $content->title ?? '' }}
-                                    </h3>
+                                    </h2>
 
                                     <p class="card-text text-muted my-3">
                                         {!! $content->details ?? '' !!}
@@ -113,7 +113,7 @@
                                 </h5>
                                 <div class="col-lg-12">
                                     @foreach (json_decode($content->tags) as $tag)
-                                        <a href="{{ route('tagSearch',['search'=>$tag]) }}" class="btn btn-sm btn-danger">{{ $tag }}</a>
+                                        <a href="{{ route('tagSearch',['search'=>$tag]) }}" class="btn btn-sm btn-danger mt-2">{{ $tag }}</a>
                                     @endforeach
                                 </div>
                             </div>
